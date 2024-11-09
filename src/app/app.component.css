@@ -1,0 +1,194 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fuente principal */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #FDBA30;
+    color: #fff;
+}
+
+.logo {
+    height: 80px;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Main content */
+main {
+    padding: 2rem;
+    flex: 1; /* Hace que el main ocupe el espacio restante */
+}
+
+/* Formulario de reserva */
+.reservation-form {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.datetime-selection label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.datetime-selection input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.reservation-form h2 {
+    margin-top: 25px;
+}
+
+/* Mapa de estacionamiento */
+#parking-map {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.parking-spot {
+    width: 60px;
+    height: 60px;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.parking-spot:hover {
+    background-color: #3e8e41;
+}
+
+.parking-spot.occupied, .parking-spot.reserved {
+    background-color: #E53935;
+}
+
+.parking-spot.occupied:hover, .parking-spot.reserved:hover {
+    background-color: #C62828;
+}
+
+/* Footer */
+footer {
+    background-color: #000;
+    color: #fff;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-logo {
+    height: 80px;
+}
+
+.footer-links {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.footer-links a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.footer-links p {
+    margin-top: 0.5rem;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .reservation-form {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar ul li {
+        margin: 0 8px;
+    }
+
+    .parking-spot {
+        width: 50px;
+        height: 50px;
+        font-size: 12px;
+    }
+}
