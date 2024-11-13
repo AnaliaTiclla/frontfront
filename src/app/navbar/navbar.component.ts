@@ -16,9 +16,10 @@ export class NavbarComponent {
 
   getOptions() {
     return [
-      { name: 'Mantenedores', link: 'categoria' },
-      { name: 'Consultas', link: 'consultas' },
-      { name: 'Reportes', link: 'reportes' }
+      // { name: 'Mantenedores', link: 'categoria' },
+      // { name: 'Mantenedores', link: 'subcategorias' },
+      // { name: 'Consultas', link: 'consultas' },
+      // { name: 'Reportes', link: 'reportes' }
     ];
   }
 }
