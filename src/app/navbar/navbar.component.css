@@ -1,0 +1,35 @@
+/* navbar.component.css */
+
+/* Personaliza el color del fondo de la navbar */
+.navbar {
+    background-color: #f8f9fa;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos para el botón de cerrar sesión */
+  .btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Ajuste del logo o texto principal */
+  .navbar-brand {
+    font-weight: bold;
+    color: #f06705;
+  }
+  
+  /* Color y estilos para los enlaces activos */
+  .nav-link.active,
+  .nav-link:hover {
+    color: #f06705;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+  
