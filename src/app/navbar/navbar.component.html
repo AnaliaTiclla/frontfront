@@ -1,7 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      LOS POSTES - {{ userRole === 'ADMIN' ? 'Admin' : 'Mesero' }}
+      LOS POSTES - 
+      <span *ngIf="userRole === 'ADMIN'">Admin</span>
+      <span *ngIf="userRole === 'MESERO'">Mesero</span>
+      <span *ngIf="userRole === 'COCINA'">Cocina</span>
     </a>
     <button
       class="navbar-toggler"
@@ -44,6 +47,13 @@
         <!-- Opciones para el rol MESERO -->
         <ng-container *ngIf="userRole === 'MESERO'">
           <li *ngFor="let option of getMeseroOptions()" class="nav-item">
+            <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
+          </li>
+        </ng-container>
+
+        <!-- Opciones para el rol COCINA -->
+        <ng-container *ngIf="userRole === 'COCINA'">
+          <li *ngFor="let option of getCocinaOptions()" class="nav-item">
             <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
           </li>
         </ng-container>

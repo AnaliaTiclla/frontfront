@@ -11,20 +11,24 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  userRole: string = 'ADMIN'; // Cambia temporalmente el rol para pruebas (ADMIN o MESERO)
+  userRole: string = 'MESERO'; // ROL TEMPORAL (ADMIN, MESERO, o COCINA)
 
   getAdminOptions() {
     return [
-      { name: 'Mantenedores', dropdown: true, options: [
-        { name: 'Categoría', link: '/admin/categoria' },
-        { name: 'SubCategoría', link: '/admin/subcategorias' },
-        { name: 'Medida de Unidad', link: '/admin/medida-unidad' },
-        { name: 'Usuario', link: '/admin/usuario' }
-      ]},
+      {
+        name: 'Mantenedores', dropdown: true, options: [
+          { name: 'Categoría', link: '/admin/categoria' },
+          { name: 'SubCategoría', link: '/admin/subcategorias' },
+          { name: 'Medida de Unidad', link: '/admin/medida-unidad' },
+          { name: 'Usuario', link: '/admin/usuario' }
+        ]
+      },
       { name: 'Consultas', link: '/admin/consultas' },
-      { name: 'Reportes', dropdown: true, options: [
-        { name: 'Dashboard', link: '/admin/reportes' }
-      ]}
+      {
+        name: 'Reportes', dropdown: true, options: [
+          { name: 'Dashboard', link: '/admin/reportes' }
+        ]
+      }
     ];
   }
 
@@ -34,6 +38,13 @@ export class NavbarComponent {
       { name: 'Órdenes Activas', link: '/mesero/ordenes-activas' },
       { name: 'Pedidos en Cola', link: '/mesero/pedidos-en-cola' },
       { name: 'Historial de Pedidos', link: '/mesero/historial-pedidos' }
+    ];
+  }
+
+  getCocinaOptions() {
+    return [
+      { name: 'Pedidos Pendientes', link: '/cocina/pedidos-pendientes' },
+      { name: 'Historial de Pedidos', link: '/cocina/historial-pedidos' }
     ];
   }
 }
