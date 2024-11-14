@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('https://portal.andina.pe/EDPfotografia3/Thumbnail/2024/07/19/001084232W.jpg') no-repeat center center fixed;
+    background: url('https://static.vecteezy.com/system/resources/previews/017/651/610/large_2x/closeup-top-wood-table-with-blur-background-free-photo.jpg') no-repeat center center fixed;
     background-size: cover;
   }
   
@@ -25,13 +25,15 @@ body {
   }
   
   .header .logo {
-    max-width: 100px;
-    margin-bottom: 1rem;
-  }
+    width: 150px; /* Ajusta este valor según el tamaño deseado */
+    height: auto; /* Mantendrá la proporción original */
+    margin-bottom: 1rem; 
+}
   
   .header h1 {
-    color: #ff5722;
+    color: #442F1B;
     font-size: 1.8rem;
+    font-weight: bold;
   }
   
   .header p {
@@ -57,7 +59,7 @@ body {
   .btn-login {
     width: 100%;
     padding: 0.7rem;
-    background-color: #ff5722;
+    background-color: #442F1B;
     color: white;
     border: none;
     border-radius: 5px;
@@ -66,7 +68,8 @@ body {
   }
   
   .btn-login:hover {
-    background-color: #e64a19;
+    background-color: #271b0f;
+
   }
   
   .footer {

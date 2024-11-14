@@ -8,25 +8,25 @@
   
   /* Estilos para el botón de cerrar sesión */
   .btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
+    border-color: #80603a;
+    color: #80603a;
   }
   
   .btn-outline-primary:hover {
-    background-color: #007bff;
+    background-color: #80603a;
     color: #fff;
   }
   
   /* Ajuste del logo o texto principal */
   .navbar-brand {
     font-weight: bold;
-    color: #f06705;
+    color: #442F1B;
   }
   
   /* Color y estilos para los enlaces activos */
   .nav-link.active,
   .nav-link:hover {
-    color: #f06705;
+    color: #281c10;
   }
   
   .dropdown-item:hover {

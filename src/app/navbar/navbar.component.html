@@ -1,7 +1,8 @@
-<!-- navbar.component.html -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOS POSTES - Admin</a>
+    <a class="navbar-brand" href="#">
+      LOS POSTES - {{ userRole === 'ADMIN' ? 'Admin' : 'Mesero' }}
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,47 +16,37 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Menú desplegable de Mantenedores -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="mantenedoresDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Mantenedores
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="mantenedoresDropdown">
-            <li><a class="dropdown-item" [routerLink]="'/admin/categoria'">Categoría</a></li>
-            <li><a class="dropdown-item" [routerLink]="'/admin/subcategorias'">SubCategoría</a></li>
-            <li><a class="dropdown-item" [routerLink]="'/admin/medida-unidad'">Medida de Unidad</a></li>
-            <li><a class="dropdown-item" [routerLink]="'/admin/usuario'">Usuario</a></li>
-          </ul>
-        </li>
         
-        <!-- Opción de Consultas -->
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/admin/consultas'">Consultas</a>
-        </li>
+        <!-- Opciones para el rol ADMIN -->
+        <ng-container *ngIf="userRole === 'ADMIN'">
+          <li *ngFor="let option of getAdminOptions()" class="nav-item dropdown" [ngClass]="{'dropdown': option.dropdown}">
+            <a *ngIf="option.dropdown"
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ option.name }}
+            </a>
+            <ul *ngIf="option.dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li *ngFor="let subOption of option.options">
+                <a class="dropdown-item" [routerLink]="subOption.link">{{ subOption.name }}</a>
+              </li>
+            </ul>
+            <a *ngIf="!option.dropdown" class="nav-link" [routerLink]="option.link">
+              {{ option.name }}
+            </a>
+          </li>
+        </ng-container>
 
-        <!-- Menú desplegable de Reportes -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="reportesDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Reportes
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="reportesDropdown">
-            <li><a class="dropdown-item" [routerLink]="'/admin/reportes'">Dashboard</a></li>
-          </ul>
-        </li>
+        <!-- Opciones para el rol MESERO -->
+        <ng-container *ngIf="userRole === 'MESERO'">
+          <li *ngFor="let option of getMeseroOptions()" class="nav-item">
+            <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
+          </li>
+        </ng-container>
       </ul>
 
       <!-- Botón de Cerrar Sesión -->
