@@ -2,7 +2,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-// { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
+ { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
   {
     path: 'admin',
     // loadComponent: () => import('./navbar/navbar.component').then(m => m.NavbarComponent), para no volver a cargar el navbar
