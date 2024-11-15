@@ -77,9 +77,10 @@ export class LoginService {
     const token = this.obtenerToken();
     return !!token;
   }
-
+  
   cerrarSesion(): void {
     localStorage.removeItem('token');
-    localStorage.removeItem('rol');
+    localStorage.removeItem('userRole');
   }
+  
 }
