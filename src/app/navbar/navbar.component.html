@@ -3,8 +3,8 @@
     <a class="navbar-brand" href="#">
       LOS POSTES - 
       <span *ngIf="userRole === 'ROLE_ADMIN'">Admin</span>
-      <span *ngIf="userRole === 'ROLE_USER'">Mesero</span>
-      <!-- <span *ngIf="userRole === 'COCINA'">Cocina</span> -->
+      <span *ngIf="userRole === 'ROLE_MESERO'">Mesero</span>
+      <span *ngIf="userRole === 'ROLE_COCINA'">Cocina</span>
     </a>
     <button
       class="navbar-toggler"
@@ -45,22 +45,22 @@
         </ng-container>
 
         <!-- Opciones para el rol MESERO -->
-        <ng-container *ngIf="userRole === 'ROLE_USER'">
+        <ng-container *ngIf="userRole === 'ROLE_MESERO'">
           <li *ngFor="let option of getMeseroOptions()" class="nav-item">
             <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
           </li>
         </ng-container>
 
-        Opciones para el rol COCINA
-        <!-- <ng-container *ngIf="userRole === 'ROLE_USER'">
+        
+        <ng-container *ngIf="userRole === 'ROLE_COCINA'">
           <li *ngFor="let option of getCocinaOptions()" class="nav-item">
             <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
           </li>
-        </ng-container> -->
+        </ng-container>
       </ul>
 
       <!-- Botón de Cerrar Sesión -->
-      <button class="btn btn-outline-primary" type="button">Cerrar Sesión</button>
+      <button class="btn btn-outline-primary" type="button" (click)="cerrarSesion()">Cerrar Sesión</button>
     </div>
   </div>
 </nav>

@@ -41,8 +41,22 @@ export class LoginComponent {
           localStorage.setItem('userRole', response.rol);
 
           // Redirigir según el rol del usuario
-          const rutaRedireccion = response.rol === 'ROLE_ADMIN' ? '/admin' : '/mesero';
-          this.router.navigate([rutaRedireccion]);
+          let rutaRedireccion: string;
+          switch (response.rol) {
+            case 'ROLE_ADMIN':
+              rutaRedireccion = '/admin';
+              break;
+            case 'ROLE_MESERO':
+              rutaRedireccion = '/mesero';
+              break;
+            case 'ROLE_COCINA':
+              rutaRedireccion = '/cocina';
+              break;
+            default:
+              this.error = 'Rol desconocido. Por favor, contacte al administrador.';
+              this.loading = false;
+              return;
+        }          this.router.navigate([rutaRedireccion]);
         } else {
           this.error = 'Respuesta inválida del servidor';
         }

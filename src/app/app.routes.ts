@@ -26,5 +26,18 @@ export const routes: Routes = [
     ]
   },
 
+  {
+    path: 'cocina',
+    loadComponent: () => import('./navbar/navbar.component').then(m => m.NavbarComponent),
+    children: [
+      { path: 'mesas', loadComponent: () => import('./cocina/pedidos-pendientes/pedidos-pendientes/pedidos-pendientes.component').then(m => m.PedidosPendientesComponent) },
+      // { path: 'ordenes-activas', loadComponent: () => import('./mesero/ordenes-activas/ordenes-activas.component').then(m => m.OrdenesActivasComponent) },
+      // { path: 'pedidos-en-cola', loadComponent: () => import('./mesero/pedidos-en-cola/pedidos-en-cola.component').then(m => m.PedidosEnColaComponent) },
+      // { path: 'historial-pedidos', loadComponent: () => import('./mesero/historial-pedidos/historial-pedidos.component').then(m => m.HistorialPedidosComponent) },
+    ]
+  },
+
+
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' } // Redirigir a login por defecto
 ];

@@ -12,10 +12,20 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   userRole: string = ''; // Inicializar el rol vacío
+  router: any;
 
   ngOnInit(): void {
     // Leer el rol del localStorage
     this.userRole = localStorage.getItem('userRole') || 'ROLE_USER'; // Valor predeterminado: MESERO
+  }
+
+  cerrarSesion(): void {
+    // Elimina los datos del localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+
+    // Redirige al usuario al login
+    this.router.navigate(['/login']);
   }
 
   getAdminOptions() {
