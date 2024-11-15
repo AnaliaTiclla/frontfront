@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginService } from './login.service';
-import { Router } from '@angular/router';  // Inyectar el Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,25 +12,42 @@ import { Router } from '@angular/router';  // Inyectar el Router
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';  // Definir las propiedades para username y password
+  username: string = '';
   password: string = '';
+  error: string = ''; // Para mostrar mensajes de error
+  loading: boolean = false; // Para manejar el estado de carga
 
   constructor(
     private loginService: LoginService,
-    private router: Router  // Inyectar el Router
+    private router: Router
   ) {}
 
-  onLogin(username: string, password: string): void {
-    this.loginService.autenticar(username, password).subscribe({
-      next: (response) => {
-        this.loginService.guardarToken(response.token);  // Guardar el token si la autenticación es exitosa
+  onSubmit(event: Event): void {
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    
+    if (!this.username || !this.password) {
+      this.error = 'Por favor, complete todos los campos';
+      return;
+    }
 
-        // Redirigir a la página principal (ruta 'admin' en este caso)
-        this.router.navigate(['/admin']);  // Esto redirige al layout de administración
+    this.loading = true;
+    this.error = '';
+
+    this.loginService.autenticar(this.username, this.password).subscribe({
+      next: (response) => {
+        if (response && response.token) {
+          this.loginService.guardarToken(response.token);
+          this.router.navigate(['/admin']);
+        } else {
+          this.error = 'Respuesta inválida del servidor';
+        }
       },
       error: (error) => {
         console.error('Error en el login:', error);
-        // Maneja el error apropiadamente
+        this.error = 'Error al iniciar sesión. Por favor, verifique sus credenciales.';
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
   }
