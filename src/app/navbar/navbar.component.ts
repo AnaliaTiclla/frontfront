@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -10,8 +10,13 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  userRole: string = 'MESERO'; // ROL TEMPORAL (ADMIN, MESERO, o COCINA)
+export class NavbarComponent implements OnInit {
+  userRole: string = ''; // Inicializar el rol vacío
+
+  ngOnInit(): void {
+    // Leer el rol del localStorage
+    this.userRole = localStorage.getItem('userRole') || 'ROLE_USER'; // Valor predeterminado: MESERO
+  }
 
   getAdminOptions() {
     return [

@@ -11,6 +11,7 @@ interface LoginCredentials {
 // Interface para la respuesta
 interface LoginResponse {
   token: string;
+  rol: string;
 }
 
 @Injectable({
@@ -38,7 +39,7 @@ export class LoginService {
     // Enviar la petición POST con las credenciales en el body
     return this.http.post<LoginResponse>(
       `${this.apiURL}/autenticar`,
-      JSON.stringify(credentials), // Convertir a string JSON
+      JSON.stringify(credentials),
       this.httpOptions
     ).pipe(
       catchError(this.handleError)
@@ -58,13 +59,18 @@ export class LoginService {
     return throwError(() => errorMessage);
   }
 
-  // Métodos para manejar el token
-  guardarToken(token: string): void {
+  // Métodos para manejar el token y rol
+  guardarToken(token: string, rol: string): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('rol', rol);
   }
 
   obtenerToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  obtenerRol(): string | null {
+    return localStorage.getItem('rol');
   }
 
   estaAutenticado(): boolean {
@@ -74,5 +80,6 @@ export class LoginService {
 
   cerrarSesion(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('rol');
   }
 }

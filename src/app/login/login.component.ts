@@ -35,9 +35,14 @@ export class LoginComponent {
 
     this.loginService.autenticar(this.username, this.password).subscribe({
       next: (response) => {
-        if (response && response.token) {
-          this.loginService.guardarToken(response.token);
-          this.router.navigate(['/admin']);
+        if (response && response.token && response.rol) {
+          // Guardar tanto el token como el rol en localStorage
+          this.loginService.guardarToken(response.token, response.rol);
+          localStorage.setItem('userRole', response.rol);
+
+          // Redirigir según el rol del usuario
+          const rutaRedireccion = response.rol === 'ROLE_ADMIN' ? '/admin' : '/home';
+          this.router.navigate([rutaRedireccion]);
         } else {
           this.error = 'Respuesta inválida del servidor';
         }
@@ -52,3 +57,5 @@ export class LoginComponent {
     });
   }
 }
+
+

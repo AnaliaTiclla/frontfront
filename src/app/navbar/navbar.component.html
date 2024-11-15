@@ -21,7 +21,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         
         <!-- Opciones para el rol ADMIN -->
-        <ng-container *ngIf="userRole === 'ADMIN'">
+        <ng-container *ngIf="userRole === 'ROLE_ADMIN'">
           <li *ngFor="let option of getAdminOptions()" class="nav-item dropdown" [ngClass]="{'dropdown': option.dropdown}">
             <a *ngIf="option.dropdown"
               class="nav-link dropdown-toggle"
@@ -45,14 +45,14 @@
         </ng-container>
 
         <!-- Opciones para el rol MESERO -->
-        <ng-container *ngIf="userRole === 'MESERO'">
+        <ng-container *ngIf="userRole === 'ROLE_USER'">
           <li *ngFor="let option of getMeseroOptions()" class="nav-item">
             <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
           </li>
         </ng-container>
 
         <!-- Opciones para el rol COCINA -->
-        <ng-container *ngIf="userRole === 'COCINA'">
+        <ng-container *ngIf="userRole === 'ROLE_USER'">
           <li *ngFor="let option of getCocinaOptions()" class="nav-item">
             <a class="nav-link" [routerLink]="option.link">{{ option.name }}</a>
           </li>
