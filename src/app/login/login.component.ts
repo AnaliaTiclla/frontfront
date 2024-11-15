@@ -41,7 +41,7 @@ export class LoginComponent {
           localStorage.setItem('userRole', response.rol);
 
           // Redirigir según el rol del usuario
-          const rutaRedireccion = response.rol === 'ROLE_ADMIN' ? '/admin' : '/home';
+          const rutaRedireccion = response.rol === 'ROLE_ADMIN' ? '/admin' : '/mesero';
           this.router.navigate([rutaRedireccion]);
         } else {
           this.error = 'Respuesta inválida del servidor';
