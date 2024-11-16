@@ -1,3 +1,75 @@
-<!-- categoria.component.html -->
-<h2>Gestión de Categorías</h2>
-<!-- Contenido del componente -->
+<div class="col-md-12 p-2">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#categoriaModal">
+      <i class="fa fa-save"></i> Nueva Categoría
+    </button>
+    <table class="table mt-2 table-bordered">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listCategorias">
+          <td>{{ item.categoriaid }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.descripcion }}</td>
+          <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+          <td>
+            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#categoriaModal" (click)="selectItem(item)">
+              <i class="fa fa-pencil"></i>
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-danger btn-sm" (click)="delete(item.categoriaid)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">{{ isUpdate ? 'Actualizar Categoría' : 'Nueva Categoría' }}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="newCategoria()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formCategoria">
+            <div class="mb-3 row">
+              <label class="col-sm-2 col-form-label">Nombre</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" formControlName="nombre" required>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label class="col-sm-2 col-form-label">Descripción</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" formControlName="descripcion" rows="3" required></textarea>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label class="col-sm-2 col-form-label">Estado</label>
+              <div class="col-sm-10">
+                <select class="form-select" formControlName="estado">
+                  <option [value]="true">Activo</option>
+                  <option [value]="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-warning btn-sm" *ngIf="isUpdate" (click)="update()">Actualizar</button>
+          <button type="button" class="btn btn-success btn-sm" *ngIf="!isUpdate" (click)="save()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
