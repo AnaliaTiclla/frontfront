@@ -1,7 +1,7 @@
-export class CategoriaModelModel {
-    categoriaid: number = 0;
-    descripcion: string = "";
-    estado: boolean = true;
-    nombre: string = "";
+export interface CategoriaModelModel {
+    categoriaid: number ;
+    descripcion: string ;
+    estado: boolean ;
+    nombre: string ;
 
 }

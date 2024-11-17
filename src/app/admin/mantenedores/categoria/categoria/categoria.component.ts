@@ -29,35 +29,56 @@ export class CategoriaComponent implements OnInit {
   }
 
   list() {
-    this.categoriaService.getCategoria().subscribe(resp => {
-      if (resp) {
-        this.listCategorias = resp;
+    this.categoriaService.getCategoria().subscribe({
+      next: (resp: any) => {
+        // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
+        if (resp && resp.data) {
+          this.listCategorias = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
       }
     });
   }
 
   save() {
-    this.categoriaService.saveCategoria(this.formCategoria.value).subscribe(resp => {
-      if (resp) {
-        this.list();
-        this.formCategoria.reset();
+    this.categoriaService.saveCategoria(this.formCategoria.value).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.status === 'success') {
+          this.list();
+          this.formCategoria.reset();
+        }
+      },
+      error: (error) => {
+        console.error('Error al guardar categoría:', error);
       }
     });
   }
 
   update() {
-    this.categoriaService.updateCategoria(this.formCategoria.value).subscribe(resp => {
-      if (resp) {
-        this.list();
-        this.formCategoria.reset();
+    this.categoriaService.updateCategoria(this.formCategoria.value).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.status === 'success') {
+          this.list();
+          this.formCategoria.reset();
+        }
+      },
+      error: (error) => {
+        console.error('Error al actualizar categoría:', error);
       }
     });
   }
 
   delete(id: number) {
-    this.categoriaService.deleteCategoria(id).subscribe(resp => {
-      if (resp) {
-        this.list();
+    this.categoriaService.deleteCategoria(id).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.status === 'success') {
+          this.list();
+        }
+      },
+      error: (error) => {
+        console.error('Error al eliminar categoría:', error);
       }
     });
   }
@@ -69,6 +90,11 @@ export class CategoriaComponent implements OnInit {
 
   selectItem(item: CategoriaModelModel) {
     this.isUpdate = true;
-    this.formCategoria.patchValue(item);
+    this.formCategoria.patchValue({
+      categoriaid: item.categoriaid,
+      nombre: item.nombre,
+      descripcion: item.descripcion,
+      estado: item.estado
+    });
   }
 }
