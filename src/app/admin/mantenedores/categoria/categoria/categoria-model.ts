@@ -1,5 +1,5 @@
 export interface CategoriaModelModel {
-    categoriaid: number ;
+    categoriaID: number ;
     descripcion: string ;
     estado: boolean ;
     nombre: string ;

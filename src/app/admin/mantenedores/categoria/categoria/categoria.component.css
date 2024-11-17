@@ -3,11 +3,61 @@
   text-align: center;
 }
 
+.btn-primary {
+  background-color: #8B4513; /* Marrón */
+  border-color: #8B4513; /* Marrón */
+}
+
+.btn-primary:hover {
+  background-color: #A0522D; /* Marrón más claro para hover */
+  border-color: #A0522D;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #5C3317; /* Marrón más oscuro para focus/active */
+  border-color: #5C3317;
+  box-shadow: none;
+}
+
+
 .modal-header {
   background-color: #007bff;
-  color: white;
+  color: rgb(222, 28, 28);
 }
 
 .modal-footer button {
   margin-right: 10px;
 }
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-sm img {
+  vertical-align: middle;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+

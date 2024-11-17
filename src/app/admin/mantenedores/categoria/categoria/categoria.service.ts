@@ -25,12 +25,18 @@ export class CategoriaService {
   }
 
   updateCategoria(request: CategoriaModelModel): Observable<any> {
-    return this.http.put<any>(`${this.URL_API}/actualizar`, request).pipe(
+    return this.http.post<any>(`${this.URL_API}/actualizar`, request).pipe(
       map(resp => resp)
     );
   }
 
   deleteCategoria(id: number): Observable<any> {
+    return this.http.get<any>(`${this.URL_API}/inhabilitar/${id}`).pipe(
+      map(resp => resp)
+    );
+  }
+
+  deleteProducto(id: number): Observable<any> {
     return this.http.delete<any>(`${this.URL_API}/eliminar/${id}`).pipe(
       map(resp => resp)
     );

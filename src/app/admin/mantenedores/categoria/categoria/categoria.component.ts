@@ -21,12 +21,13 @@ export class CategoriaComponent implements OnInit {
   ngOnInit(): void {
     this.list();
     this.formCategoria = new FormGroup({
-      categoriaid: new FormControl(''),
+      categoriaID: new FormControl(),
       nombre: new FormControl(''),
       descripcion: new FormControl(''),
       estado: new FormControl(true),
     });
   }
+ 
 
   list() {
     this.categoriaService.getCategoria().subscribe({
@@ -34,6 +35,7 @@ export class CategoriaComponent implements OnInit {
         // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listCategorias = resp.data;
+          console.log("Lista de categorías:", this.listCategorias);
         }
       },
       error: (error) => {
@@ -41,6 +43,8 @@ export class CategoriaComponent implements OnInit {
       }
     });
   }
+
+ 
 
   save() {
     this.categoriaService.saveCategoria(this.formCategoria.value).subscribe({
@@ -91,7 +95,7 @@ export class CategoriaComponent implements OnInit {
   selectItem(item: CategoriaModelModel) {
     this.isUpdate = true;
     this.formCategoria.patchValue({
-      categoriaid: item.categoriaid,
+      categoriaID: item.categoriaID,
       nombre: item.nombre,
       descripcion: item.descripcion,
       estado: item.estado
