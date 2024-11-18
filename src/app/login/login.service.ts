@@ -30,13 +30,13 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   autenticar(username: string, password: string): Observable<LoginResponse> {
-    // Crear el objeto con las credenciales
+    localStorage.clear();
+
     const credentials: LoginCredentials = {
       username,
       password
     };
 
-    // Enviar la petición POST con las credenciales en el body
     return this.http.post<LoginResponse>(
       `${this.apiURL}/autenticar`,
       JSON.stringify(credentials),
