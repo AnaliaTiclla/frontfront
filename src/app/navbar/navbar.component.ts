@@ -20,12 +20,13 @@ export class NavbarComponent implements OnInit {
   }
 
   cerrarSesion(): void {
+    // Redirige al usuario al login
+    this.router.navigate(['/login']);
     // Elimina los datos del localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
 
-    // Redirige al usuario al login
-    this.router.navigate(['/login']);
+    
   }
 
   getAdminOptions() {

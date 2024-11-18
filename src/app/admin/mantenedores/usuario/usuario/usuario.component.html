@@ -1,3 +1,98 @@
-<!-- usuario.component.html -->
-<h2>Gestión de Usuarios</h2>
-<!-- Contenido del componente -->
+<div class="col-md-12 p-2">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#usuarioModal">
+      <i class="fa fa-save"></i> Nuevo Usuario
+    </button>
+    <table class="table mt-2 table-bordered">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Empleado ID</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listUsuarios">
+          <td>{{ item.usuarioID }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.empleadoID }}</td>
+          <td>{{ item.rol }}</td>
+          <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+          <td>
+            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#usuarioModal" (click)="selectItem(item)">
+              <img src="icons\icons8-editar-64.png" alt="Editar" class="action-icon">
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-danger btn-sm" (click)="delete(item.usuarioID)">
+              <img src="icons\icons8-eliminar-64.png" alt="Eliminar" class="action-icon">
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="usuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">{{ isUpdate ? 'ACTUALIZAR USUARIO' : 'NUEVO USUARIO' }}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="newEmpleado()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formUsuario">
+            <div class="mb-4 row" *ngIf="isUpdate">
+              <label class="col-sm-3 col-form-label">Id</label>
+              <div class="col-sm-9">
+                <span class="form-control-plaintext">{{ formUsuario.get('usuarioID')?.value }}</span>
+              </div>
+            </div>
+            <div class="mb-4 row">
+              <label class="col-sm-3 col-form-label">Username</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="username" required>
+              </div>
+            </div>
+            <div class="mb-4 row">
+              <label class="col-sm-3 col-form-label">Password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" formControlName="password" required>
+              </div>
+            </div>
+            <div class="mb-4 row">
+              <label class="col-sm-3 col-form-label">Empleado ID</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" formControlName="empleadoID" required>
+              </div>
+            </div>
+            <div class="mb-4 row">
+              <label class="col-sm-3 col-form-label">Rol</label>
+              <div class="col-sm-9">
+                <select class="form-select" formControlName="rol">
+                  <option value="ROLE_ADMIN">Administrador</option>
+                  <option value="ROLE_COCINA">Cocinero</option>
+                  <option value="ROLE_MESERO">Mesero</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-4 row" *ngIf="isUpdate">
+              <label class="col-sm-3 col-form-label">Estado</label>
+              <div class="col-sm-9">
+                <select class="form-select" formControlName="estado">
+                  <option [value]="true">Activo</option>
+                  <option [value]="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-warning btn-sm" *ngIf="isUpdate" (click)="update()">Actualizar</button>
+          <button type="button" class="btn btn-success btn-sm" *ngIf="!isUpdate" (click)="save()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
