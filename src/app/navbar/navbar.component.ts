@@ -35,7 +35,8 @@ export class NavbarComponent implements OnInit {
           { name: 'SubCategoría', link: '/admin/subcategorias' },
           { name: 'Medida de Unidad', link: '/admin/medida-unidad' },
           { name: 'Usuario', link: '/admin/usuario' },
-          { name: 'Empleado', link: '/admin/empleado' }
+          { name: 'Empleado', link: '/admin/empleado' },
+          { name: 'Mesa', link: '/admin/mesa' }
         ]
       },
       { name: 'Consultas', link: '/admin/consultas' },

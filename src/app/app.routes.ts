@@ -12,6 +12,8 @@ export const routes: Routes = [
       { path: 'medida-unidad', loadComponent: () => import('./admin/mantenedores/medida-unidad/medida-unidad/medida-unidad.component').then(m => m.MedidaUnidadComponent) },
       { path: 'usuario', loadComponent: () => import('./admin/mantenedores/usuario/usuario/usuario.component').then(m => m.UsuarioComponent) },
       { path: 'empleado', loadComponent: () => import('./admin/mantenedores/empleado/empleado/empleado.component').then(m => m.EmpleadoComponent) },
+      { path: 'mesa', loadComponent: () => import('./admin/mantenedores/mesa/mesa/mesa.component').then(m => m.MesaComponent) },
+
       { path: 'reportes', loadComponent: () => import('./admin/reportes/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
     ]
   },
