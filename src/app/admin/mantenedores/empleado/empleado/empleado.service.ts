@@ -3,37 +3,38 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CategoriaModelModel } from './categoria-model';
+import { EmpleadoModelModel } from './empleado-model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriaService {
+export class EmpleadoService {
   private URL_API: string = 'http://localhost:8080/admin/categoria';
   private http = inject(HttpClient);
 
-  getCategoria(): Observable<CategoriaModelModel[]> {
-    return this.http.get<CategoriaModelModel[]>(`${this.URL_API}/listar`).pipe(
+  getEmpleado(): Observable<EmpleadoModelModel[]> {
+    return this.http.get<EmpleadoModelModel[]>(`${this.URL_API}/listar`).pipe(
       map(res => res)
     );
   }
 
-  saveCategoria(request: CategoriaModelModel): Observable<any> {
+  saveEmpleado(request: EmpleadoModelModel): Observable<any> {
     return this.http.post<any>(`${this.URL_API}/guardar`, request).pipe(
       map(resp => resp)
     );
   }
 
-  updateCategoria(request: CategoriaModelModel): Observable<any> {
+  updateEmpleado(request: EmpleadoModelModel): Observable<any> {
     return this.http.post<any>(`${this.URL_API}/actualizar`, request).pipe(
       map(resp => resp)
     );
   }
 
-  deleteCategoria(id: number): Observable<any> {
+  deleteEmpleado(id: number): Observable<any> {
     return this.http.get<any>(`${this.URL_API}/inhabilitar/${id}`).pipe(
       map(resp => resp)
     );
   }
+
 
 }
