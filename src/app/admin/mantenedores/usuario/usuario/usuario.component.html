@@ -62,11 +62,15 @@
               </div>
             </div>
             <div class="mb-4 row">
-              <label class="col-sm-3 col-form-label">Empleado ID</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" formControlName="empleadoID" required>
+                <label class="col-sm-3 col-form-label">Empleado</label>
+                <div class="col-sm-9">
+                  <select class="form-select" formControlName="empleadoID">
+                    <option *ngFor="let empleado of listaEmpleados" [value]="empleado.empleadoID">
+                      {{ empleado.nombre }} {{ empleado.apellido }}
+                    </option>
+                  </select>
+                </div>
               </div>
-            </div>
             <div class="mb-4 row">
               <label class="col-sm-3 col-form-label">Rol</label>
               <div class="col-sm-9">
