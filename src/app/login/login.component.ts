@@ -27,6 +27,7 @@ export class LoginComponent {
     
     if (!this.username || !this.password) {
       this.error = 'Por favor, complete todos los campos';
+      this.loading = false;
       return;
     }
 
@@ -59,11 +60,13 @@ export class LoginComponent {
         }          this.router.navigate([rutaRedireccion]);
         } else {
           this.error = 'Respuesta inválida del servidor';
+          this.loading = false;
         }
       },
       error: (error) => {
         console.error('Error en el login:', error);
         this.error = 'Error al iniciar sesión. Por favor, verifique sus credenciales.';
+        this.loading = false;
       },
       complete: () => {
         this.loading = false;

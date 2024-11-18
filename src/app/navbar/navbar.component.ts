@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,22 +11,20 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  userRole: string = ''; // Inicializar el rol vacío
-  router: any;
+  userRole: string = ''; 
+
+  // Inyectar Router en el constructor
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Leer el rol del localStorage
-    this.userRole = localStorage.getItem('userRole') || 'ROLE_USER'; // Valor predeterminado: MESERO
+    this.userRole = localStorage.getItem('userRole') || 'ROLE_USER';
   }
 
   cerrarSesion(): void {
-    // Redirige al usuario al login
+    // Ahora puedes usar this.router para navegar
     this.router.navigate(['/login']);
-    // Elimina los datos del localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
-
-    
   }
 
   getAdminOptions() {
