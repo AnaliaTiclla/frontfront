@@ -30,7 +30,6 @@ export class SubcategoriaComponent implements OnInit {
       categoriaID: new FormControl(''),
       nombre: new FormControl(''),
       descripcion: new FormControl(''),
-      precio: new FormControl(0),
       estado: new FormControl(true),
     });
   }
@@ -65,7 +64,6 @@ export class SubcategoriaComponent implements OnInit {
     if (this.formSubcategoria.valid) {
       const subcategoria = this.formSubcategoria.value;
       
-      // Asegurarse que categoriaID sea un número
       subcategoria.categoriaID = Number(subcategoria.categoriaID);
       
       console.log('Datos a enviar:', subcategoria); // Debug
@@ -73,7 +71,7 @@ export class SubcategoriaComponent implements OnInit {
       this.subcategoriaService.saveSubcategoria(subcategoria).subscribe({
         next: (response) => {
           console.log('Respuesta exitosa:', response);
-          this.loadSubcategorias();
+          //this.loadSubcategorias();
           this.formSubcategoria.reset();
           document.getElementById('subcategoriaModal')?.click();
         },
@@ -89,7 +87,7 @@ export class SubcategoriaComponent implements OnInit {
   }
 
   // Método para cargar subcategorías
-  private loadSubcategorias() {
+  /*private loadSubcategorias() {
     this.subcategoriaService.getSubcategorias().subscribe({
       next: (data) => {
         this.listSubcategorias = data;
@@ -98,7 +96,7 @@ export class SubcategoriaComponent implements OnInit {
         console.error('Error al cargar subcategorías:', error);
       }
     });
-  }
+  }*/
 
   update() {
     if (this.formSubcategoria.valid) {
@@ -109,7 +107,7 @@ export class SubcategoriaComponent implements OnInit {
       
       this.subcategoriaService.updateSubcategoria(subcategoria).subscribe({
         next: () => {
-          this.loadSubcategorias();
+          //this.loadSubcategorias();
           document.getElementById('subcategoriaModal')?.click();
           this.formSubcategoria.reset();
         },
@@ -125,7 +123,7 @@ export class SubcategoriaComponent implements OnInit {
     if (confirm('¿Está seguro que desea eliminar esta subcategoría?')) {
       this.subcategoriaService.deleteSubcategoria(id).subscribe({
         next: () => {
-          this.loadSubcategorias();
+          //this.loadSubcategorias();
           alert('Subcategoría eliminada con éxito');
         },
         error: (err: Error) => {
