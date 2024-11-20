@@ -1,1 +1,78 @@
-<p>distribucion-mesas works!</p>
+
+<div class="container p-4">
+    <!-- Lista de Mesas -->
+    <div class="mesas-list">
+      <ng-container *ngFor="let mesa of mesas">
+        <div class="mesa-item" (click)="seleccionarMesa(mesa)">
+          <h2 class="mesa-titulo">Mesa {{ mesa.numero }}</h2>
+          <p [ngClass]="{'estado-libre': mesa.estado === 'Libre',
+                        'estado-ocupada': mesa.estado === 'Ocupada',
+                        'estado-pendiente': mesa.estado === 'Pendiente'}">
+            {{ mesa.estado }}
+          </p>
+          <hr>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Modal de Pedido -->
+    <div class="modal" *ngIf="mesaSeleccionada">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Mesa {{ mesaSeleccionada.numero }}</h2>
+          <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+        </div>
+
+        <!-- Categorías -->
+        <div class="categorias-tabs">
+          <button *ngFor="let cat of categorias"
+                  [class.activo]="categoriaActual === cat"
+                  (click)="categoriaActual = cat">
+            {{ cat }}
+          </button>
+        </div>
+
+        <!-- Productos -->
+        <div class="productos-grid">
+          <div *ngFor="let producto of getProductosPorCategoria()"
+               class="producto-item"
+               (click)="agregarAlPedido(producto)">
+            <span>{{ producto.nombre }}</span>
+            <span>S/. {{ producto.precio.toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Pedido Actual -->
+        <div class="pedido-actual">
+          <h3>Pedido Actual</h3>
+          <div *ngIf="pedidoActual.length === 0" class="mensaje-vacio">
+            No hay items en el pedido
+          </div>
+          <ng-container *ngIf="pedidoActual.length > 0">
+            <div *ngFor="let item of pedidoActual" class="pedido-item">
+              <div class="item-info">
+                <span>{{ item.nombre }}</span>
+                <span class="cantidad">x{{ item.cantidad }}</span>
+              </div>
+              <div class="item-acciones">
+                <span>S/. {{ (item.precio * item.cantidad).toFixed(2) }}</span>
+                <button (click)="eliminarItem(item)">×</button>
+              </div>
+            </div>
+            <div class="pedido-total">
+              <span>Total:</span>
+              <span>S/. {{ calcularTotal().toFixed(2) }}</span>
+            </div>
+            <div class="pedido-acciones">
+              <button class="btn-enviar" (click)="enviarPedido()">
+                Enviar a Cocina
+              </button>
+              <button class="btn-cobrar" (click)="mostrarPago()">
+                Cobrar
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
