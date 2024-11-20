@@ -1,10 +1,9 @@
-
-// mesero.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemPedido, Mesa, Producto } from './mesa.interface';
-// import { Mesa, Producto, ItemPedido } from './mesa.interface';
+import { MesaModelModel } from '../../../admin/mantenedores/mesa/mesa/mesa-model';
+import { MesaService } from '../../../admin/mantenedores/mesa/mesa/mesa.service';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -14,8 +13,9 @@ import { ItemPedido, Mesa, Producto } from './mesa.interface';
   styleUrls: ['./distribucion-mesas.component.css']
 })
 export class DistribucionMesasComponent implements OnInit {
-  mesas: Mesa[] = [];
-  mesaSeleccionada: Mesa | null = null;
+  private mesaService = inject(MesaService);
+  listMesa: MesaModelModel[] = [];
+  mesaSeleccionada: MesaModelModel | null = null;
   categorias: string[] = ['Pollos', 'Complementos', 'Bebidas'];
   categoriaActual: string = 'Pollos';
   pedidoActual: ItemPedido[] = [];
@@ -31,21 +31,29 @@ export class DistribucionMesasComponent implements OnInit {
   ];
 mesa: Mesa | undefined;
 
-  ngOnInit() {
-    this.inicializarMesas();
-  }
+ngOnInit(): void {
+  this.list();
+}
 
-  inicializarMesas() {
-    this.mesas = Array(8).fill(null).map((_, i) => ({
-      numero: i + 1,
-      estado: 'Libre'
-    }));
-  }
 
-  seleccionarMesa(mesa: Mesa) {
+list() {
+  this.mesaService.getMesa().subscribe({
+    next: (resp: any) => {
+      if (resp && resp.data) {
+        this.listMesa = resp.data;
+        console.log("Lista de mesas:", this.listMesa);
+      }
+    },
+    error: (error) => {
+      console.error('Error al cargar mesas:', error);
+    }
+  });
+}
+
+  seleccionarMesa(mesa: MesaModelModel) {
     this.mesaSeleccionada = mesa;
-    if (mesa.estado === 'Libre') {
-      mesa.estado = 'Ocupada';
+    if (mesa.condicion === 'Disponbible') {
+      mesa.condicion = 'Ocupada';
     }
   }
 
@@ -91,7 +99,7 @@ mesa: Mesa | undefined;
 
   enviarPedido() {
     if (this.mesaSeleccionada && this.pedidoActual.length > 0) {
-      this.mesaSeleccionada.estado = 'Pendiente';
+      this.mesaSeleccionada.condicion = 'Pendiente';
       // Aquí irían las llamadas al servicio
       alert('Pedido enviado a cocina');
       this.cerrarModal();
@@ -101,7 +109,7 @@ mesa: Mesa | undefined;
   mostrarPago() {
     if (confirm('¿Desea generar el comprobante de pago?')) {
       if (this.mesaSeleccionada) {
-        this.mesaSeleccionada.estado = 'Libre';
+        this.mesaSeleccionada.condicion = 'Disponible';
         this.cerrarModal();
       }
     }

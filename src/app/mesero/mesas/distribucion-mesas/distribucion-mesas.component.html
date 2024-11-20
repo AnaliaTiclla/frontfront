@@ -2,12 +2,12 @@
 <div class="container p-4">
     <!-- Lista de Mesas -->
     <div class="mesas-list">
-      <ng-container *ngFor="let mesa of mesas">
+      <ng-container *ngFor="let mesa of listMesa">
         <div class="mesa-item" (click)="seleccionarMesa(mesa)">
           <h2 class="mesa-titulo">Mesa {{ mesa.numero }}</h2>
-          <p [ngClass]="{'estado-libre': mesa.estado === 'Libre',
-                        'estado-ocupada': mesa.estado === 'Ocupada',
-                        'estado-pendiente': mesa.estado === 'Pendiente'}">
+          <p [ngClass]="{'estado-libre': mesa.condicion === 'Disponible',
+                        'estado-ocupada': mesa.condicion === 'Ocupada',
+                        'estado-pendiente': mesa.condicion === 'Pendiente'}">
             {{ mesa.estado }}
           </p>
           <hr>
