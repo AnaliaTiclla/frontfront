@@ -3,6 +3,5 @@ export interface SubcategoriaModel {
     categoriaID: number;
     nombre: string;
     descripcion: string;
-    precio: number;
     estado?: boolean;
 } 

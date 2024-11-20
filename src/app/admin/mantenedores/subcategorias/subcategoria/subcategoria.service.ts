@@ -35,6 +35,6 @@ export class SubcategoriaService {
 
   deleteSubcategoria(id: number): Observable<any> {
     console.log(`Intentando eliminar subcategoría con ID: ${id}`);
-    return this.http.delete<any>(`${this.URL_API}/eliminar/${id}`);
+    return this.http.delete<any>(`${this.URL_API}/inhabilitar/${id}`);
   }
 } 

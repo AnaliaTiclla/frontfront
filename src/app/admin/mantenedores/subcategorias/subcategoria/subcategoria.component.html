@@ -9,7 +9,6 @@
         <th>Categoría</th>
         <th>Nombre</th>
         <th>Descripción</th>
-        <th>Precio</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
@@ -20,7 +19,6 @@
         <td>{{ getCategoryName(item.categoriaID) }}</td>
         <td>{{ item.nombre }}</td>
         <td>{{ item.descripcion }}</td>
-        <td>{{ item.precio | currency:'USD':'symbol':'1.2-2' }}</td>
         <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
         <td>
           <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#subcategoriaModal" (click)="selectItem(item)">
@@ -72,17 +70,6 @@
             <label class="col-sm-2 col-form-label">Descripción</label>
             <div class="col-sm-10">
               <textarea class="form-control" formControlName="descripcion" rows="3" required></textarea>
-            </div>
-          </div>
-          <div class="mb-4 row">
-            <label class="col-sm-2 col-form-label">Precio</label>
-            <div class="col-sm-10">
-              <input type="number" 
-                     class="form-control" 
-                     formControlName="precio" 
-                     step="0.01" 
-                     min="0" 
-                     required>
             </div>
           </div>
           <div class="mb-4 row" *ngIf="isUpdate">

@@ -1,4 +1,3 @@
-// subcategoria.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SubcategoriaModel } from './subcategoria-model';
@@ -149,7 +148,6 @@ export class SubcategoriaComponent implements OnInit {
       categoriaID: item.categoriaID,
       nombre: item.nombre,
       descripcion: item.descripcion,
-      precio: item.precio,
       estado: item.estado
     });
   }
