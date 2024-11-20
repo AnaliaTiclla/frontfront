@@ -1,10 +1,160 @@
 // subcategoria.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SubcategoriaModel } from './subcategoria-model';
+import { CommonModule } from '@angular/common';
+import { CategoriaService } from '../../categoria/categoria/categoria.service';
+import { CategoriaModelModel } from '../../categoria/categoria/categoria-model';
+import { SubcategoriaService } from './subcategoria.service';
 
 @Component({
   selector: 'app-subcategoria',
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './subcategoria.component.html',
   styleUrls: ['./subcategoria.component.css']
 })
-export class SubCategoriaComponent { }
+export class SubcategoriaComponent implements OnInit {
+  private subcategoriaService = inject(SubcategoriaService);
+  private categoriaService = inject(CategoriaService);
+
+  listSubcategorias: SubcategoriaModel[] = [];
+  listCategorias: CategoriaModelModel[] = [];
+  formSubcategoria: FormGroup = new FormGroup({});
+  isUpdate: boolean = false;
+
+  ngOnInit(): void {
+    this.list();
+    this.loadCategorias();
+    this.formSubcategoria = new FormGroup({
+      subcategoriaID: new FormControl(),
+      categoriaID: new FormControl(''),
+      nombre: new FormControl(''),
+      descripcion: new FormControl(''),
+      precio: new FormControl(0),
+      estado: new FormControl(true),
+    });
+  }
+
+  list() {
+    this.subcategoriaService.getSubcategorias().subscribe({
+      next: (resp: any) => {
+        if (resp && resp.data) {
+          this.listSubcategorias = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar subcategorías:', error);
+      }
+    });
+  }
+
+  loadCategorias() {
+    this.categoriaService.getCategoria().subscribe({
+      next: (resp: any) => {
+        if (resp && resp.data) {
+          this.listCategorias = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
+  }
+
+  save() {
+    if (this.formSubcategoria.valid) {
+      const subcategoria = this.formSubcategoria.value;
+      
+      // Asegurarse que categoriaID sea un número
+      subcategoria.categoriaID = Number(subcategoria.categoriaID);
+      
+      console.log('Datos a enviar:', subcategoria); // Debug
+
+      this.subcategoriaService.saveSubcategoria(subcategoria).subscribe({
+        next: (response) => {
+          console.log('Respuesta exitosa:', response);
+          this.loadSubcategorias();
+          this.formSubcategoria.reset();
+          document.getElementById('subcategoriaModal')?.click();
+        },
+        error: (error) => {
+          console.error('Error al guardar:', error);
+          alert('Error al guardar la subcategoría');
+        }
+      });
+    } else {
+      console.log('Errores del formulario:', this.formSubcategoria.errors);
+      alert('Por favor complete todos los campos requeridos');
+    }
+  }
+
+  // Método para cargar subcategorías
+  private loadSubcategorias() {
+    this.subcategoriaService.getSubcategorias().subscribe({
+      next: (data) => {
+        this.listSubcategorias = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar subcategorías:', error);
+      }
+    });
+  }
+
+  update() {
+    if (this.formSubcategoria.valid) {
+      const subcategoria = this.formSubcategoria.value;
+      
+      // Asegurarse que categoriaID sea un número
+      subcategoria.categoriaID = Number(subcategoria.categoriaID);
+      
+      this.subcategoriaService.updateSubcategoria(subcategoria).subscribe({
+        next: () => {
+          this.loadSubcategorias();
+          document.getElementById('subcategoriaModal')?.click();
+          this.formSubcategoria.reset();
+        },
+        error: (err: Error) => {
+          console.error('Error al actualizar:', err);
+          alert('Error al actualizar la subcategoría');
+        }
+      });
+    }
+  }
+
+  delete(id: number) {
+    if (confirm('¿Está seguro que desea eliminar esta subcategoría?')) {
+      this.subcategoriaService.deleteSubcategoria(id).subscribe({
+        next: () => {
+          this.loadSubcategorias();
+          alert('Subcategoría eliminada con éxito');
+        },
+        error: (err: Error) => {
+          console.error('Error al eliminar:', err);
+          alert('Error al eliminar la subcategoría');
+        }
+      });
+    }
+  }
+
+  newSubcategoria() {
+    this.isUpdate = false;
+    this.formSubcategoria.reset();
+  }
+
+  selectItem(item: SubcategoriaModel) {
+    this.isUpdate = true;
+    this.formSubcategoria.patchValue({
+      subcategoriaID: item.subcategoriaID,
+      categoriaID: item.categoriaID,
+      nombre: item.nombre,
+      descripcion: item.descripcion,
+      precio: item.precio,
+      estado: item.estado
+    });
+  }
+
+  getCategoryName(categoriaID: number): string {
+    return this.listCategorias.find(cat => cat.categoriaID === categoriaID)?.nombre || '';
+  }
+}

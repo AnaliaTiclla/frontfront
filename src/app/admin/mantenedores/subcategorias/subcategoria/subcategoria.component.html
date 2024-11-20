@@ -1,3 +1,107 @@
-<!-- subcategoria.component.html -->
-<h2>Gestión de SubCategorías</h2>
-<!-- Contenido del componente -->
+<div class="col-md-12 p-2">
+  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#subcategoriaModal">
+    <i class="fa fa-save"></i> Nueva Subcategoría
+  </button>
+  <table class="table mt-2 table-bordered">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Categoría</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of listSubcategorias">
+        <td>{{ item.subcategoriaID }}</td>
+        <td>{{ getCategoryName(item.categoriaID) }}</td>
+        <td>{{ item.nombre }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>{{ item.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+        <td>{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#subcategoriaModal" (click)="selectItem(item)">
+            <img src="icons\icons8-editar-64.png" alt="Editar" class="action-icon">
+          </button>
+          &nbsp;
+          <button type="button" class="btn btn-danger btn-sm" (click)="delete(item?.subcategoriaID ?? 0)">
+            <img src="icons\icons8-eliminar-64.png" alt="Eliminar" class="action-icon">
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="subcategoriaModal" tabindex="-1" aria-labelledby="subcategoriaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">{{ isUpdate ? 'ACTUALIZAR SUBCATEGORIA' : 'NUEVA SUBCATEGORIA' }}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="newSubcategoria()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formSubcategoria">
+          <div class="mb-4 row" *ngIf="isUpdate">
+            <label class="col-sm-2 col-form-label">Id</label>
+            <div class="col-sm-10">
+              <span class="form-control-plaintext">{{ formSubcategoria.get('subcategoriaID')?.value }}</span>
+            </div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label">Categoría</label>
+            <div class="col-sm-10">
+              <select class="form-select" formControlName="categoriaID" required>
+                <option [ngValue]="null">Seleccione una categoría</option>
+                <option *ngFor="let cat of listCategorias" [ngValue]="cat.categoriaID">
+                  {{ cat.nombre }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" formControlName="nombre" required>
+            </div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label">Descripción</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" formControlName="descripcion" rows="3" required></textarea>
+            </div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label">Precio</label>
+            <div class="col-sm-10">
+              <input type="number" 
+                     class="form-control" 
+                     formControlName="precio" 
+                     step="0.01" 
+                     min="0" 
+                     required>
+            </div>
+          </div>
+          <div class="mb-4 row" *ngIf="isUpdate">
+            <label class="col-sm-2 col-form-label">Estado</label>
+            <div class="col-sm-10">
+              <select class="form-select" formControlName="estado">
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning btn-sm" *ngIf="isUpdate" (click)="update()">Actualizar</button>
+        <button type="button" class="btn btn-success btn-sm" *ngIf="!isUpdate" (click)="save()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
