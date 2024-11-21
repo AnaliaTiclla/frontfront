@@ -38,7 +38,6 @@ export class EmpleadoComponent implements OnInit {
         // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listEmpleados = resp.data;
-          console.log("Lista de empleado:", this.listEmpleados);
         }
       },
       error: (error) => {

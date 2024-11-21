@@ -55,10 +55,8 @@ export class UsuarioComponent implements OnInit {
   list() {
     this.usuarioService.getUsuario().subscribe({
       next: (resp: any) => {
-        // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listUsuarios = resp.data;
-          console.log("Lista de usuario:", this.listUsuarios);
         }
       },
       error: (error) => {

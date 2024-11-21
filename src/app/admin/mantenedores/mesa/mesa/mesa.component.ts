@@ -38,7 +38,6 @@ export class MesaComponent implements OnInit {
         // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listMesa = resp.data;
-          console.log("Lista de mesas:", this.listMesa);
         }
       },
       error: (error) => {

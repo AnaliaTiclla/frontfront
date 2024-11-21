@@ -9,6 +9,7 @@ export const routes: Routes = [
     children: [
       { path: 'categoria', loadComponent: () => import('./admin/mantenedores/categoria/categoria/categoria.component').then(m => m.CategoriaComponent) },
       { path: 'subcategorias', loadComponent: () => import('./admin/mantenedores/subcategorias/subcategoria/subcategoria.component').then(m => m.SubcategoriaComponent) },
+      { path: 'producto', loadComponent: () => import('./admin/mantenedores/producto/producto.component').then(m => m.ProductoComponent) },
       { path: 'medida-unidad', loadComponent: () => import('./admin/mantenedores/medida-unidad/medida-unidad/medida-unidad.component').then(m => m.MedidaUnidadComponent) },
       { path: 'usuario', loadComponent: () => import('./admin/mantenedores/usuario/usuario/usuario.component').then(m => m.UsuarioComponent) },
       { path: 'empleado', loadComponent: () => import('./admin/mantenedores/empleado/empleado/empleado.component').then(m => m.EmpleadoComponent) },

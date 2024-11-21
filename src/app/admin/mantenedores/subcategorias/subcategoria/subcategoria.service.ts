@@ -11,7 +11,7 @@ export class SubcategoriaService {
   private URL_API: string = 'http://localhost:8080/admin/subcategoria';
   private http = inject(HttpClient);
 
-  getSubcategorias(): Observable<SubcategoriaModel[]> {
+  getSubcategoria(): Observable<SubcategoriaModel[]> {
     return this.http.get<SubcategoriaModel[]>(`${this.URL_API}/listar`).pipe(
       map(res => res)
     );

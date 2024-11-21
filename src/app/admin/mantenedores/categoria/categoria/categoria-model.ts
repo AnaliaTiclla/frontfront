@@ -3,5 +3,4 @@ export interface CategoriaModelModel {
     descripcion: string ;
     estado: boolean ;
     nombre: string ;
-
 }

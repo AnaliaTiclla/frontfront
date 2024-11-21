@@ -35,7 +35,7 @@ export class SubcategoriaComponent implements OnInit {
   }
 
   list() {
-    this.subcategoriaService.getSubcategorias().subscribe({
+    this.subcategoriaService.getSubcategoria().subscribe({
       next: (resp: any) => {
         if (resp && resp.data) {
           this.listSubcategorias = resp.data;

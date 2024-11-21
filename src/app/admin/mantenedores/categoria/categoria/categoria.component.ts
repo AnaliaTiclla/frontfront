@@ -32,10 +32,8 @@ export class CategoriaComponent implements OnInit {
   list() {
     this.categoriaService.getCategoria().subscribe({
       next: (resp: any) => {
-        // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listCategorias = resp.data;
-          console.log("Lista de categorías:", this.listCategorias);
         }
       },
       error: (error) => {
