@@ -1,5 +1,5 @@
 export interface SubcategoriaModel {
-    subcategoriaID?: number;
+    subCategoriaId?: number;
     nombre: string;
     descripcion: string;
     estado?: boolean;

@@ -123,6 +123,7 @@ export class ProductoComponent implements OnInit {
   }
 
   getSubcategoryName(subcategoriaID: number): string {
-    return this.listSubcategoria.find(sub => sub.subcategoriaID === subcategoriaID)?.nombre || '';
+    const subcategory = this.listSubcategoria.find(sub => sub.subCategoriaId === subcategoriaID);
+    return subcategory?.nombre || 'Sin subcategoría';
   }
 }

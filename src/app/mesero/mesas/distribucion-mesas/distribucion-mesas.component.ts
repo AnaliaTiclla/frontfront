@@ -62,7 +62,6 @@ export class DistribucionMesasComponent implements OnInit {
 
   cerrarModal(): void {
     this.mesaSeleccionada = null;
-    this.ordenActual = [];
   }
 
   getProductosPorSubcategoria(): ProductoModel[] {
@@ -162,7 +161,7 @@ export class DistribucionMesasComponent implements OnInit {
   }
 
   getSubcategoryName(subcategoriaID: number): string {
-    return this.listSubcategoria.find(sub => sub.subcategoriaID === subcategoriaID)?.nombre || '';
+    return this.listSubcategoria.find(sub => sub.subCategoriaId === subcategoriaID)?.nombre || '';
   }
 
   loadCategorias(): void {

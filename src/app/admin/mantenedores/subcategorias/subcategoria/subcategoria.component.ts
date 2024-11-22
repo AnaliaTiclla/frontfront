@@ -128,7 +128,7 @@ export class SubcategoriaComponent implements OnInit {
   selectItem(item: SubcategoriaModel) {
     this.isUpdate = true;
     this.formSubcategoria.patchValue({
-      subcategoriaID: item.subcategoriaID,
+      subcategoriaID: item.subCategoriaId,
       categoriaID: item.categoriaID,
       nombre: item.nombre,
       descripcion: item.descripcion,
