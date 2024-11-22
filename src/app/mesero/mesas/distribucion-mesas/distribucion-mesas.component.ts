@@ -1,9 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ItemPedido, Mesa, Producto } from './mesa.interface';
 import { MesaModelModel } from '../../../admin/mantenedores/mesa/mesa/mesa-model';
 import { MesaService } from '../../../admin/mantenedores/mesa/mesa/mesa.service';
+import { ProductoModel } from '../../../admin/mantenedores/producto/producto-model';
+import { CategoriaModelModel } from '../../../admin/mantenedores/categoria/categoria/categoria-model';
+import { SubcategoriaModel } from '../../../admin/mantenedores/subcategorias/subcategoria/subcategoria-model';
+import { OrdenDetalleModel } from './ordenDetalle-model';
+import { SubcategoriaService } from '../../../admin/mantenedores/subcategorias/subcategoria/subcategoria.service';
+import { CategoriaService } from '../../../admin/mantenedores/categoria/categoria/categoria.service';
+import { ProductoService } from '../../../admin/mantenedores/producto/producto.service';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -12,106 +18,180 @@ import { MesaService } from '../../../admin/mantenedores/mesa/mesa/mesa.service'
   templateUrl: './distribucion-mesas.component.html',
   styleUrls: ['./distribucion-mesas.component.css']
 })
+
 export class DistribucionMesasComponent implements OnInit {
   private mesaService = inject(MesaService);
+  private subcategoriaService = inject(SubcategoriaService);
+  private categoriaService = inject(CategoriaService);
+  private productoService = inject(ProductoService);
+  
   listMesa: MesaModelModel[] = [];
+  listSubcategoria: SubcategoriaModel[] = [];
+  listCategoria: CategoriaModelModel[] = [];
+  listProductos: ProductoModel[] = [];
   mesaSeleccionada: MesaModelModel | null = null;
-  categorias: string[] = ['Pollos', 'Complementos', 'Bebidas'];
-  categoriaActual: string = 'Pollos';
-  pedidoActual: ItemPedido[] = [];
+  subcategoriaActual: number = 1;
+  ordenActual: OrdenDetalleModel[] = [];
 
-  productos: Producto[] = [
-    { id: 1, nombre: '1/4 Pollo', precio: 15.90, categoria: 'Pollos' },
-    { id: 2, nombre: '1/2 Pollo', precio: 28.90, categoria: 'Pollos' },
-    { id: 3, nombre: '1 Pollo', precio: 54.90, categoria: 'Pollos' },
-    { id: 4, nombre: 'Papa Frita', precio: 8.90, categoria: 'Complementos' },
-    { id: 5, nombre: 'Ensalada', precio: 6.90, categoria: 'Complementos' },
-    { id: 6, nombre: 'Gaseosa', precio: 5.90, categoria: 'Bebidas' },
-    { id: 7, nombre: 'Agua', precio: 2.50, categoria: 'Bebidas' },
-  ];
-mesa: Mesa | undefined;
+  ngOnInit(): void {
+    this.list();
+    this.loadCategorias();
+    this.loadSubcategorias();
+    this.loadProductos();
+  }
 
-ngOnInit(): void {
-  this.list();
-}
-
-
-list() {
-  this.mesaService.getMesa().subscribe({
-    next: (resp: any) => {
-      if (resp && resp.data) {
-        this.listMesa = resp.data;
-        console.log("Lista de mesas:", this.listMesa);
+  list(): void {
+    this.mesaService.getMesa().subscribe({
+      next: (resp: any) => {
+        if (resp?.data) {
+          this.listMesa = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar mesas:', error);
       }
-    },
-    error: (error) => {
-      console.error('Error al cargar mesas:', error);
-    }
-  });
-}
+    });
+  }
 
-  seleccionarMesa(mesa: MesaModelModel) {
+  seleccionarMesa(mesa: MesaModelModel): void {
     this.mesaSeleccionada = mesa;
-    if (mesa.condicion === 'Disponbible') {
+    if (mesa.condicion === 'Disponible') {
       mesa.condicion = 'Ocupada';
     }
   }
 
-  cerrarModal() {
+  cerrarModal(): void {
     this.mesaSeleccionada = null;
-    this.pedidoActual = [];
+    this.ordenActual = [];
   }
 
-  getProductosPorCategoria(): Producto[] {
-    return this.productos.filter(p => p.categoria === this.categoriaActual);
+  getProductosPorSubcategoria(): ProductoModel[] {
+    return this.listProductos.filter(p => p.subcategoriaID === this.subcategoriaActual);
   }
 
-  agregarAlPedido(producto: Producto) {
-    const itemExistente = this.pedidoActual.find(item => item.id === producto.id);
+  agregarAOrden(producto: ProductoModel): void {
+    const itemExistente = this.ordenActual.find(item => item.productoID === producto.productoID);
     
     if (itemExistente) {
       itemExistente.cantidad++;
+      itemExistente.subTotal = itemExistente.cantidad * this.getPrecioProducto(producto.productoID);
     } else {
-      this.pedidoActual.push({
-        ...producto,
-        cantidad: 1
-      });
+      const nuevoDetalle: OrdenDetalleModel = {
+        ordenDetalleID: 0,
+        productoID: producto.productoID,
+        cantidad: 1,
+        subTotal: this.getPrecioProducto(producto.productoID),
+        comentario: '',
+        ordenID: 0
+      };
+      this.ordenActual.push(nuevoDetalle);
     }
   }
 
-  eliminarItem(item: ItemPedido) {
-    const index = this.pedidoActual.findIndex(i => i.id === item.id);
+  getNombreProducto(productoId: number): string {
+    const producto = this.listProductos.find(p => p.productoID === productoId);
+    return producto?.nombre || '';
+  }
+
+  getPrecioProducto(productoId: number): number {
+    const producto = this.listProductos.find(p => p.productoID === productoId);
+    return producto?.precio || 0;
+  }
+
+  eliminarItem(item: OrdenDetalleModel): void {
+    const index = this.ordenActual.findIndex(i => i.productoID === item.productoID);
     if (index !== -1) {
-      if (this.pedidoActual[index].cantidad > 1) {
-        this.pedidoActual[index].cantidad--;
+      if (this.ordenActual[index].cantidad > 1) {
+        this.ordenActual[index].cantidad--;
+        this.ordenActual[index].subTotal = 
+          this.ordenActual[index].cantidad * this.getPrecioProducto(this.ordenActual[index].productoID);
       } else {
-        this.pedidoActual.splice(index, 1);
+        this.ordenActual.splice(index, 1);
       }
     }
   }
 
   calcularTotal(): number {
-    return this.pedidoActual.reduce(
-      (total, item) => total + (item.precio * item.cantidad), 
-      0
-    );
+    return this.ordenActual.reduce((total, item) => total + item.subTotal, 0);
   }
 
-  enviarPedido() {
-    if (this.mesaSeleccionada && this.pedidoActual.length > 0) {
+  agregarComentario(item: OrdenDetalleModel, comentario: string): void {
+    const detalleItem = this.ordenActual.find(i => i.ordenDetalleID === item.ordenDetalleID);
+    if (detalleItem) {
+      detalleItem.comentario = comentario;
+    }
+  }
+
+  enviarOrden(): void {
+    if (this.mesaSeleccionada && this.ordenActual.length > 0) {
+      const ordenCompleta = {
+        mesaID: this.mesaSeleccionada.mesaID,
+        detalles: this.ordenActual,
+        total: this.calcularTotal()
+      };
+      
+      // Aquí deberías hacer la llamada al servicio para guardar la orden
+      console.log('Enviando orden:', ordenCompleta);
+      
       this.mesaSeleccionada.condicion = 'Pendiente';
-      // Aquí irían las llamadas al servicio
       alert('Pedido enviado a cocina');
       this.cerrarModal();
     }
   }
 
-  mostrarPago() {
+  mostrarPago(): void {
     if (confirm('¿Desea generar el comprobante de pago?')) {
       if (this.mesaSeleccionada) {
         this.mesaSeleccionada.condicion = 'Disponible';
         this.cerrarModal();
       }
     }
+  }
+
+  loadSubcategorias(): void {
+    this.subcategoriaService.getSubcategoria().subscribe({
+      next: (resp: any) => {
+        if (resp?.data) {
+          this.listSubcategoria = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar subcategorías:', error);
+      }
+    });
+  }
+
+  getSubcategoryName(subcategoriaID: number): string {
+    return this.listSubcategoria.find(sub => sub.subcategoriaID === subcategoriaID)?.nombre || '';
+  }
+
+  loadCategorias(): void {
+    this.categoriaService.getCategoria().subscribe({
+      next: (resp: any) => {
+        if (resp?.data) {
+          this.listCategoria = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
+  }
+
+  getCategoryName(categoriaID: number): string {
+    return this.listCategoria.find(cat => cat.categoriaID === categoriaID)?.nombre || '';
+  }
+
+  loadProductos(): void {
+    this.productoService.getProducto().subscribe({
+      next: (resp: any) => {
+        if (resp?.data) {
+          this.listProductos = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar productos:', error);
+      }
+    });
   }
 }

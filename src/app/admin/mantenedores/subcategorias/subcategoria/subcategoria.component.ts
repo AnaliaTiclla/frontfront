@@ -65,13 +65,11 @@ export class SubcategoriaComponent implements OnInit {
       const subcategoria = this.formSubcategoria.value;
       
       subcategoria.categoriaID = Number(subcategoria.categoriaID);
-      
-      console.log('Datos a enviar:', subcategoria); // Debug
 
       this.subcategoriaService.saveSubcategoria(subcategoria).subscribe({
         next: (response) => {
           console.log('Respuesta exitosa:', response);
-          //this.loadSubcategorias();
+          this.list();
           this.formSubcategoria.reset();
           document.getElementById('subcategoriaModal')?.click();
         },
@@ -86,18 +84,6 @@ export class SubcategoriaComponent implements OnInit {
     }
   }
 
-  // Método para cargar subcategorías
-  /*private loadSubcategorias() {
-    this.subcategoriaService.getSubcategorias().subscribe({
-      next: (data) => {
-        this.listSubcategorias = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar subcategorías:', error);
-      }
-    });
-  }*/
-
   update() {
     if (this.formSubcategoria.valid) {
       const subcategoria = this.formSubcategoria.value;
@@ -107,7 +93,7 @@ export class SubcategoriaComponent implements OnInit {
       
       this.subcategoriaService.updateSubcategoria(subcategoria).subscribe({
         next: () => {
-          //this.loadSubcategorias();
+          this.list();
           document.getElementById('subcategoriaModal')?.click();
           this.formSubcategoria.reset();
         },
@@ -123,7 +109,7 @@ export class SubcategoriaComponent implements OnInit {
     if (confirm('¿Está seguro que desea eliminar esta subcategoría?')) {
       this.subcategoriaService.deleteSubcategoria(id).subscribe({
         next: () => {
-          //this.loadSubcategorias();
+          this.list();
           alert('Subcategoría eliminada con éxito');
         },
         error: (err: Error) => {

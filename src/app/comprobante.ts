@@ -1,4 +1,3 @@
-// comprobante.ts
 import { ItemPedido } from './mesa';
 
 export interface Comprobante {

@@ -108,12 +108,12 @@
     justify-content: space-between;
   }
 
-  .pedido-actual {
+  .orden-actual {
     border-top: 1px solid #eee;
     padding-top: 1rem;
   }
 
-  .pedido-item {
+  .orden-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -135,7 +135,7 @@
     color: #666;
   }
 
-  .pedido-total {
+  .orden-total {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
@@ -144,7 +144,7 @@
     border-top: 1px solid #eee;
   }
 
-  .pedido-acciones {
+  .orden-acciones {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
