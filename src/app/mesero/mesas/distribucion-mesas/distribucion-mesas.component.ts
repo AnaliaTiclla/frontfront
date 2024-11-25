@@ -142,7 +142,7 @@ export class DistribucionMesasComponent implements OnInit {
     this.ordenService.saveDetalleOrden(ordenDetalle).subscribe({
       next: (resp: any) => {
         if (resp && resp.status === 'success') {
-          this.wsOrdenService.sendOrden(resp);
+          
         }
       },
       error: (error) => {
@@ -156,7 +156,6 @@ export class DistribucionMesasComponent implements OnInit {
       next: (resp: any) => {
         if (resp && resp.status === 'success') {
           const ordenID = resp.data.ordenID;
-          console.log('Orden ID:', ordenID);
 
           // Actualizar el ordenID en cada detalle y guardar
           const detallesConID = this.ordenActual.map(detalle => {
@@ -164,7 +163,6 @@ export class DistribucionMesasComponent implements OnInit {
           });
   
           this.guardarDetalles(detallesConID);
-          console.log('Detalles con ordenID:', detallesConID);
         }
       },
       error: (error) => {
@@ -178,7 +176,8 @@ export class DistribucionMesasComponent implements OnInit {
       this.ordenService.saveDetalleOrden(detalle).subscribe({
         next: (resp: any) => {
           if (resp && resp.status === 'success') {
-            console.log('Detalle guardado:', detalle);
+            this.wsOrdenService.sendOrden(detalle);
+            console.log('Holi:', detalle);
           }
         },
         error: (error) => {
@@ -191,8 +190,8 @@ export class DistribucionMesasComponent implements OnInit {
 
 enviarOrden(): void {
   if (this.mesaSeleccionada && this.ordenActual.length > 0) {
-    const empleadoID = this.loginService.obtenerEmpleadoID(); // Obtener el empleadoID del LoginService
-    
+    const empleadoID = this.loginService.obtenerEmpleadoID(); 
+
     if (!empleadoID) {
       console.error('Empleado no autenticado');
       alert('No se pudo enviar la orden. Verifique la sesión del empleado.');
