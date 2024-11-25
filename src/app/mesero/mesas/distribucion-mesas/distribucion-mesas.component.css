@@ -166,3 +166,52 @@
   .btn-cobrar {
     background-color: #28a745;
   }
+
+  .item-comentario {
+    margin-top: 8px;
+  }
+  
+  .item-comentario input {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  textarea {
+    width: 100%;
+    resize: none; /* Evita que el usuario cambie el tamaño manualmente */
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  #subcategoria-select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .producto-item {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .producto-item:hover {
+    background-color: #f0f0f0;
+  }

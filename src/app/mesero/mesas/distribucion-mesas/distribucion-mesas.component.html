@@ -21,17 +21,22 @@
         <h2>Mesa {{ mesaSeleccionada.numero }}</h2>
         <button class="btn-cerrar" (click)="cerrarModal()">×</button>
       </div>
-
-      <div class="categorias-tabs">
-        <button 
-          *ngFor="let categoria of listCategoria"
-          [class.activo]="subcategoriaActual === categoria.categoriaID"
-          (click)="subcategoriaActual = categoria.categoriaID"
-          class="btn btn-outline-primary me-2">
-          {{ categoria.nombre }}
-        </button>
+  
+      <!-- Combobox para seleccionar subcategoría -->
+      <div class="form-group">
+        <label for="subcategoria-select">Seleccionar Subcategoría:</label>
+        <select 
+          [(ngModel)]="subcategoriaActual" 
+          class="form-select mb-3"
+          (change)="loadProductos()">
+          <option *ngFor="let subcategoria of listSubcategoria" 
+                  [value]="subcategoria.subCategoriaId">
+            {{ subcategoria.nombre }}
+          </option>
+        </select>
       </div>
-
+  
+      <!-- Productos filtrados por subcategoría -->
       <div class="productos-grid">
         <div 
           *ngFor="let producto of getProductosPorSubcategoria()"
@@ -48,7 +53,7 @@
           No hay items en la orden
         </div>
         <ng-container *ngIf="ordenActual.length > 0">
-          <div *ngFor="let item of ordenActual" class="orden-item">
+          <div class="orden-item" *ngFor="let item of ordenActual">
             <div class="item-info">
               <span>{{ getNombreProducto(item.productoID) }}</span>
               <span class="cantidad">x{{ item.cantidad }}</span>
@@ -56,6 +61,16 @@
             <div class="item-acciones">
               <span>S/. {{ (getPrecioProducto(item.productoID) * item.cantidad).toFixed(2) }}</span>
               <button class="btn btn-danger btn-sm" (click)="eliminarItem(item)">×</button>
+            </div>
+            <div class="comentario">
+              <label for="comentario-{{item.productoID}}">Comentario:</label>
+              <textarea
+                id="comentario-{{item.productoID}}"
+                rows="3"
+                class="form-control"
+                [(ngModel)]="item.comentario"
+                (change)="agregarComentario(item, item.comentario)">
+              </textarea>
             </div>
           </div>
 

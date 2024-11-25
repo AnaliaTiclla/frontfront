@@ -93,7 +93,8 @@ export class DistribucionMesasComponent implements OnInit {
         productoID: producto.productoID,
         cantidad: 1,
         subTotal: this.getPrecioProducto(producto.productoID),
-        ordenID: 0
+        ordenID: 0,
+        comentario: ''
       };
       this.ordenActual.push(nuevoDetalle);
     }
@@ -127,10 +128,10 @@ export class DistribucionMesasComponent implements OnInit {
   }
 
   agregarComentario(item: OrdenDetalleModel, comentario: string): void {
-    const detalleItem = this.ordenActual.find(i => i.detalleOrdenId === item.detalleOrdenId);
+    const detalleItem = this.ordenActual.find(i => i.productoID === item.productoID);
     if (detalleItem) {
       detalleItem.comentario = comentario;
-      this.ordenService.updateDetalleOrden(detalleItem)
+      
     }
   }
 
@@ -268,4 +269,26 @@ enviarOrden(): void {
       }
     });
   }
+
+
+
+  cargarSubcategorias() {
+    this.subcategoriaService.getSubcategoria().subscribe({
+      next: (resp: any) => {
+        if (resp && resp.data) {
+          this.listSubcategoria = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar productos:', error);
+      }
+    });
+  }
+
+  obtenerSubcategoryName(subcategoriaID: number): string {
+    const subcategory = this.listSubcategoria.find(sub => sub.subCategoriaId === subcategoriaID);
+    return subcategory?.nombre || 'Sin subcategoría';
+  }
+
+  
 }

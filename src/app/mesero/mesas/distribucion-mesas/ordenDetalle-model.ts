@@ -3,6 +3,6 @@ export interface OrdenDetalleModel {
     productoID: number ;
     cantidad: number ;
     subTotal: number;
-    comentario?: string;
+    comentario: string;
     ordenID: number ;
 }
