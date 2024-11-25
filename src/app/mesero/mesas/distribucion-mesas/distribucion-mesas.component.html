@@ -25,12 +25,11 @@
       <!-- Combobox para seleccionar subcategoría -->
       <div class="form-group">
         <label for="subcategoria-select">Seleccionar Subcategoría:</label>
-        <select 
-          [(ngModel)]="subcategoriaActual" 
-          class="form-select mb-3"
-          (change)="loadProductos()">
-          <option *ngFor="let subcategoria of listSubcategoria" 
-                  [value]="subcategoria.subCategoriaId">
+        <select
+          id="subcategoria-select"
+          class="form-control"
+          [(ngModel)]="subcategoriaActual">
+          <option *ngFor="let subcategoria of listSubcategoria" [value]="subcategoria.subCategoriaId">
             {{ subcategoria.nombre }}
           </option>
         </select>
