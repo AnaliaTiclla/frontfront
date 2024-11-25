@@ -11,7 +11,10 @@ interface LoginCredentials {
 // Interface para la respuesta
 interface LoginResponse {
   token: string;
+  refreshToken: string;
   rol: string;
+  username: string;
+  empleadoID: number;
 }
 
 @Injectable({
@@ -60,27 +63,36 @@ export class LoginService {
   }
 
   // Métodos para manejar el token y rol
-  guardarToken(token: string, rol: string): void {
+  guardarToken(token: string, refreshToken: string, rol: string, empleadoID: number): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('rol', rol);
+    localStorage.setItem('empleadoID', empleadoID.toString());
   }
 
   obtenerToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  obtenerRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
   obtenerRol(): string | null {
     return localStorage.getItem('rol');
+  }
+
+  obtenerEmpleadoID(): number | null {
+    const empleadoID = localStorage.getItem('empleadoID');
+    return empleadoID ? parseInt(empleadoID, 10) : null;
   }
 
   estaAutenticado(): boolean {
     const token = this.obtenerToken();
     return !!token;
   }
-  
+
   cerrarSesion(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
+    localStorage.clear();
   }
-  
 }

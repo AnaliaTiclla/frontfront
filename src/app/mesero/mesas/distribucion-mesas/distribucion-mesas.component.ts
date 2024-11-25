@@ -12,6 +12,7 @@ import { CategoriaService } from '../../../admin/mantenedores/categoria/categori
 import { ProductoService } from '../../../admin/mantenedores/producto/producto.service';
 import { OrdenService } from '../orden.service';
 import { OrdenModel } from './orden-model';
+import { LoginService } from '../../../login/login.service';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -27,6 +28,8 @@ export class DistribucionMesasComponent implements OnInit {
   private categoriaService = inject(CategoriaService);
   private productoService = inject(ProductoService);
   private ordenService = inject(OrdenService);
+  private loginService = inject(LoginService);
+
   
   listMesa: MesaModelModel[] = [];
   listSubcategoria: SubcategoriaModel[] = [];
@@ -182,21 +185,32 @@ export class DistribucionMesasComponent implements OnInit {
   }
   
 
-  enviarOrden(): void {
-    if (this.mesaSeleccionada && this.ordenActual.length > 0) {
-      this.ordenModel = {
-        mesaID: this.mesaSeleccionada.mesaID,
-        fecha: new Date(),
-        condicion: "En cocina",
-        montoTotal: this.calcularTotal(),
-        empleadoID: 1
-      };
-      this.saveOrden(this.ordenModel);
-      this.mesaSeleccionada.condicion = 'Pendiente';
-      this.mesaService.updateMesa(this.mesaSeleccionada)
-      alert('Pedido enviado a cocina');
+enviarOrden(): void {
+  if (this.mesaSeleccionada && this.ordenActual.length > 0) {
+    const empleadoID = this.loginService.obtenerEmpleadoID(); // Obtener el empleadoID del LoginService
+    
+    if (!empleadoID) {
+      console.error('Empleado no autenticado');
+      alert('No se pudo enviar la orden. Verifique la sesión del empleado.');
+      return;
     }
+    
+    this.ordenModel = {
+      mesaID: this.mesaSeleccionada.mesaID,
+      fecha: new Date(),
+      condicion: "En cocina",
+      montoTotal: this.calcularTotal(),
+      empleadoID: empleadoID // Asignar dinámicamente el empleadoID
+    };
+
+    this.saveOrden(this.ordenModel);
+    this.mesaSeleccionada.condicion = 'Pendiente';
+    this.mesaService.updateMesa(this.mesaSeleccionada);
+    alert('Pedido enviado a cocina');
+  } else {
+    alert('Debe seleccionar una mesa y agregar productos a la orden antes de enviarla.');
   }
+}
   
 
   mostrarPago(): void {

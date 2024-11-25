@@ -38,7 +38,7 @@ export class LoginComponent {
       next: (response) => {
         if (response && response.token && response.rol) {
           // Guardar tanto el token como el rol en localStorage
-          this.loginService.guardarToken(response.token, response.rol);
+          this.loginService.guardarToken(response.token,response.refreshToken, response.rol,response.empleadoID);
           localStorage.setItem('userRole', response.rol);
 
           // Redirigir según el rol del usuario
