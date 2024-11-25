@@ -81,7 +81,7 @@ export class DistribucionMesasComponent implements OnInit {
   }
 
   getProductosPorSubcategoria(): ProductoModel[] {
-    return this.listProductos.filter(p => p.subcategoriaID === this.subcategoriaActual);
+    return this.listProductos.filter(p => p.subcategoriaID === +this.subcategoriaActual);
   }
 
   agregarAOrden(producto: ProductoModel): void {
