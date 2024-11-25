@@ -1,5 +1,4 @@
 <div class="container p-4">
-  <!-- Lista de Mesas -->
   <div class="mesas-list">
     <ng-container *ngFor="let mesa of listMesa">
       <div class="mesa-item" (click)="seleccionarMesa(mesa)">
@@ -16,7 +15,6 @@
     </ng-container>
   </div>
 
-  <!-- Modal de orden -->
   <div class="modal" *ngIf="mesaSeleccionada">
     <div class="modal-content">
       <div class="modal-header">
@@ -24,7 +22,6 @@
         <button class="btn-cerrar" (click)="cerrarModal()">×</button>
       </div>
 
-      <!-- Categorías -->
       <div class="categorias-tabs">
         <button 
           *ngFor="let categoria of listCategoria"
@@ -35,7 +32,6 @@
         </button>
       </div>
 
-      <!-- Productos -->
       <div class="productos-grid">
         <div 
           *ngFor="let producto of getProductosPorSubcategoria()"
@@ -46,14 +42,12 @@
         </div>
       </div>
 
-      <!-- Orden Actual -->
       <div class="orden-actual">
         <h3>Orden Actual</h3>
         <div *ngIf="ordenActual.length === 0" class="mensaje-vacio">
           No hay items en la orden
         </div>
         <ng-container *ngIf="ordenActual.length > 0">
-          <!-- Lista de items -->
           <div *ngFor="let item of ordenActual" class="orden-item">
             <div class="item-info">
               <span>{{ getNombreProducto(item.productoID) }}</span>
@@ -65,13 +59,11 @@
             </div>
           </div>
 
-          <!-- Total -->
           <div class="orden-total">
             <span>Total:</span>
             <span>S/. {{ calcularTotal().toFixed(2) }}</span>
           </div>
 
-          <!-- Botones de acción -->
           <div class="orden-acciones">
             <button class="btn btn-primary me-2" (click)="enviarOrden()">
               Enviar a Cocina

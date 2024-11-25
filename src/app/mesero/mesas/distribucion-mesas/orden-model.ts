@@ -1,5 +1,5 @@
 export interface OrdenModel {
-    ordenID: number ;
+    ordenID?: number ;
     fecha: Date ;
     condicion: string ;
     montoTotal: number;

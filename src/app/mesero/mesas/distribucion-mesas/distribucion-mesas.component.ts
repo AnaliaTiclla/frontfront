@@ -61,12 +61,14 @@ export class DistribucionMesasComponent implements OnInit {
     this.mesaSeleccionada = mesa;
     if (mesa.condicion === 'Disponible') {
       mesa.condicion = 'Atendiendo';
+      this.mesaService.updateMesa(mesa)
     }
   }
 
   cerrarModal(): void {
     if (this.mesaSeleccionada != null && this.mesaSeleccionada.condicion == "Atendiendo") {
       this.mesaSeleccionada.condicion = 'Disponible';
+      this.mesaService.updateMesa(this.mesaSeleccionada)
     }
     this.mesaSeleccionada = null;
     this.ordenModel = null;
@@ -85,11 +87,9 @@ export class DistribucionMesasComponent implements OnInit {
       itemExistente.subTotal = itemExistente.cantidad * this.getPrecioProducto(producto.productoID);
     } else {
       const nuevoDetalle: OrdenDetalleModel = {
-        detalleOrdenId: 0,
         productoID: producto.productoID,
         cantidad: 1,
         subTotal: this.getPrecioProducto(producto.productoID),
-        comentario: '',
         ordenID: 0
       };
       this.ordenActual.push(nuevoDetalle);
@@ -127,6 +127,7 @@ export class DistribucionMesasComponent implements OnInit {
     const detalleItem = this.ordenActual.find(i => i.detalleOrdenId === item.detalleOrdenId);
     if (detalleItem) {
       detalleItem.comentario = comentario;
+      this.ordenService.updateDetalleOrden(detalleItem)
     }
   }
 
@@ -148,10 +149,15 @@ export class DistribucionMesasComponent implements OnInit {
       next: (resp: any) => {
         if (resp && resp.status === 'success') {
           const ordenID = resp.data.ordenID;
-          this.ordenActual.forEach(detalle => {
-            detalle.ordenID = ordenID; // Asignar el ordenID a cada detalle
-            this.saveDetalleOrden(detalle); // Guardar cada detalle
+          console.log('Orden ID:', ordenID);
+
+          // Actualizar el ordenID en cada detalle y guardar
+          const detallesConID = this.ordenActual.map(detalle => {
+            return { ...detalle, ordenID };
           });
+  
+          this.guardarDetalles(detallesConID);
+          console.log('Detalles con ordenID:', detallesConID);
         }
       },
       error: (error) => {
@@ -159,11 +165,26 @@ export class DistribucionMesasComponent implements OnInit {
       }
     });
   }
+  
+  guardarDetalles(detalles: OrdenDetalleModel[]): void {
+    detalles.forEach(detalle => {
+      this.ordenService.saveDetalleOrden(detalle).subscribe({
+        next: (resp: any) => {
+          if (resp && resp.status === 'success') {
+            console.log('Detalle guardado:', detalle);
+          }
+        },
+        error: (error) => {
+          console.error('Error al guardar detalle de orden:', error);
+        }
+      });
+    });
+  }
+  
 
   enviarOrden(): void {
     if (this.mesaSeleccionada && this.ordenActual.length > 0) {
       this.ordenModel = {
-        ordenID: 0,
         mesaID: this.mesaSeleccionada.mesaID,
         fecha: new Date(),
         condicion: "En cocina",
@@ -172,8 +193,8 @@ export class DistribucionMesasComponent implements OnInit {
       };
       this.saveOrden(this.ordenModel);
       this.mesaSeleccionada.condicion = 'Pendiente';
+      this.mesaService.updateMesa(this.mesaSeleccionada)
       alert('Pedido enviado a cocina');
-      this.cerrarModal();
     }
   }
   
@@ -182,7 +203,7 @@ export class DistribucionMesasComponent implements OnInit {
     if (confirm('¿Desea generar el comprobante de pago?')) {
       if (this.mesaSeleccionada) {
         this.mesaSeleccionada.condicion = 'Disponible';
-        this.cerrarModal();
+        //this.cerrarModal();
       }
     }
   }
