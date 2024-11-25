@@ -1,5 +1,5 @@
 export interface OrdenDetalleModel {
-    ordenDetalleID: number ;
+    detalleOrdenId: number ;
     productoID: number ;
     cantidad: number ;
     subTotal: number;

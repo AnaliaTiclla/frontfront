@@ -10,6 +10,8 @@ import { OrdenDetalleModel } from './ordenDetalle-model';
 import { SubcategoriaService } from '../../../admin/mantenedores/subcategorias/subcategoria/subcategoria.service';
 import { CategoriaService } from '../../../admin/mantenedores/categoria/categoria/categoria.service';
 import { ProductoService } from '../../../admin/mantenedores/producto/producto.service';
+import { OrdenService } from '../orden.service';
+import { OrdenModel } from './orden-model';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -24,6 +26,7 @@ export class DistribucionMesasComponent implements OnInit {
   private subcategoriaService = inject(SubcategoriaService);
   private categoriaService = inject(CategoriaService);
   private productoService = inject(ProductoService);
+  private ordenService = inject(OrdenService);
   
   listMesa: MesaModelModel[] = [];
   listSubcategoria: SubcategoriaModel[] = [];
@@ -32,6 +35,7 @@ export class DistribucionMesasComponent implements OnInit {
   mesaSeleccionada: MesaModelModel | null = null;
   subcategoriaActual: number = 1;
   ordenActual: OrdenDetalleModel[] = [];
+  ordenModel: OrdenModel | null = null;
 
   ngOnInit(): void {
     this.list();
@@ -56,12 +60,17 @@ export class DistribucionMesasComponent implements OnInit {
   seleccionarMesa(mesa: MesaModelModel): void {
     this.mesaSeleccionada = mesa;
     if (mesa.condicion === 'Disponible') {
-      mesa.condicion = 'Ocupada';
+      mesa.condicion = 'Atendiendo';
     }
   }
 
   cerrarModal(): void {
+    if (this.mesaSeleccionada != null && this.mesaSeleccionada.condicion == "Atendiendo") {
+      this.mesaSeleccionada.condicion = 'Disponible';
+    }
     this.mesaSeleccionada = null;
+    this.ordenModel = null;
+    this.ordenActual = [];
   }
 
   getProductosPorSubcategoria(): ProductoModel[] {
@@ -76,7 +85,7 @@ export class DistribucionMesasComponent implements OnInit {
       itemExistente.subTotal = itemExistente.cantidad * this.getPrecioProducto(producto.productoID);
     } else {
       const nuevoDetalle: OrdenDetalleModel = {
-        ordenDetalleID: 0,
+        detalleOrdenId: 0,
         productoID: producto.productoID,
         cantidad: 1,
         subTotal: this.getPrecioProducto(producto.productoID),
@@ -115,28 +124,59 @@ export class DistribucionMesasComponent implements OnInit {
   }
 
   agregarComentario(item: OrdenDetalleModel, comentario: string): void {
-    const detalleItem = this.ordenActual.find(i => i.ordenDetalleID === item.ordenDetalleID);
+    const detalleItem = this.ordenActual.find(i => i.detalleOrdenId === item.detalleOrdenId);
     if (detalleItem) {
       detalleItem.comentario = comentario;
     }
   }
 
+  saveDetalleOrden(ordenDetalle: OrdenDetalleModel) {
+    this.ordenService.saveDetalleOrden(ordenDetalle).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.status === 'success') {
+          //No sé
+        }
+      },
+      error: (error) => {
+        console.error('Error al guardar producto:', error);
+      }
+    });
+  }
+
+  saveOrden(orden: OrdenModel) {
+    this.ordenService.saveOrden(orden).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.status === 'success') {
+          const ordenID = resp.data.ordenID;
+          this.ordenActual.forEach(detalle => {
+            detalle.ordenID = ordenID; // Asignar el ordenID a cada detalle
+            this.saveDetalleOrden(detalle); // Guardar cada detalle
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error al guardar la orden:', error);
+      }
+    });
+  }
+
   enviarOrden(): void {
     if (this.mesaSeleccionada && this.ordenActual.length > 0) {
-      const ordenCompleta = {
+      this.ordenModel = {
+        ordenID: 0,
         mesaID: this.mesaSeleccionada.mesaID,
-        detalles: this.ordenActual,
-        total: this.calcularTotal()
+        fecha: new Date(),
+        condicion: "En cocina",
+        montoTotal: this.calcularTotal(),
+        empleadoID: 1
       };
-      
-      // Aquí deberías hacer la llamada al servicio para guardar la orden
-      console.log('Enviando orden:', ordenCompleta);
-      
+      this.saveOrden(this.ordenModel);
       this.mesaSeleccionada.condicion = 'Pendiente';
       alert('Pedido enviado a cocina');
       this.cerrarModal();
     }
   }
+  
 
   mostrarPago(): void {
     if (confirm('¿Desea generar el comprobante de pago?')) {
