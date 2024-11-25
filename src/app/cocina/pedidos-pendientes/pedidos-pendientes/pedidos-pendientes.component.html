@@ -1,1 +1,56 @@
-<p>pedidos-pendientes works!</p>
+<div class="col-md-12 p-2">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#categoriaModal">
+      <i class="fa fa-save"></i> Nueva Orden
+    </button>
+    <table class="table mt-2 table-bordered">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+          <th>Comentario</th>
+          <th>Orden</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listOrdenes">
+          <td>{{ item.detalleOrdenId }}</td>
+          <td>{{ item.productoID }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.subTotal }}</td>
+          <td>{{ item.comentario }}</td>
+          <td>{{ item.ordenID}}</td>
+          <td>      
+            &nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="mb-4 row">
+              <label class="col-sm-2 col-form-label">Nombre</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" formControlName="nombre" required>
+              </div>
+            </div>
+            <div class="mb-4 row">
+              <label class="col-sm-2 col-form-label">Descripción</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" formControlName="descripcion" rows="3" required></textarea>
+              </div>
+            </div>
+            <div class="mb-4 row">
+                <label class="col-sm-2 col-form-label">Precio</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" formControlName="precio" required>
+                </div>
+              </div>
+        </div>
+    </div>
+  </div>
