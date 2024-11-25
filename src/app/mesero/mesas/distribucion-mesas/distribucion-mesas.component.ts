@@ -13,6 +13,7 @@ import { ProductoService } from '../../../admin/mantenedores/producto/producto.s
 import { OrdenService } from '../orden.service';
 import { OrdenModel } from './orden-model';
 import { LoginService } from '../../../login/login.service';
+import { WSOrdenService } from '../../../cocina/wsorden.service';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -29,6 +30,7 @@ export class DistribucionMesasComponent implements OnInit {
   private productoService = inject(ProductoService);
   private ordenService = inject(OrdenService);
   private loginService = inject(LoginService);
+  private wsOrdenService = inject(WSOrdenService);
 
   
   listMesa: MesaModelModel[] = [];
@@ -94,7 +96,8 @@ export class DistribucionMesasComponent implements OnInit {
         cantidad: 1,
         subTotal: this.getPrecioProducto(producto.productoID),
         ordenID: 0,
-        comentario: ''
+        comentario: '',
+        condicion: 'PENDIENTE'
       };
       this.ordenActual.push(nuevoDetalle);
     }
@@ -139,7 +142,7 @@ export class DistribucionMesasComponent implements OnInit {
     this.ordenService.saveDetalleOrden(ordenDetalle).subscribe({
       next: (resp: any) => {
         if (resp && resp.status === 'success') {
-          //No sé
+          this.wsOrdenService.sendOrden(resp);
         }
       },
       error: (error) => {

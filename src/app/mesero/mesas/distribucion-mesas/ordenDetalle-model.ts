@@ -4,5 +4,6 @@ export interface OrdenDetalleModel {
     cantidad: number ;
     subTotal: number;
     comentario: string;
+    condicion: string;
     ordenID: number ;
 }
