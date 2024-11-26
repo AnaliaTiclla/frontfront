@@ -35,7 +35,6 @@ export class MesaComponent implements OnInit {
   list() {
     this.mesaService.getMesa().subscribe({
       next: (resp: any) => {
-        // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listMesa = resp.data;
         }
@@ -72,21 +71,6 @@ export class MesaComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al actualizar mesa:', error);
-      }
-    });
-  }
-
-
-  condicion() {
-    this.mesaService.condicionMesa(this.formMesa.value).subscribe({
-      next: (resp: any) => {
-        if (resp && resp.status === 'success') {
-          this.list();
-          this.formMesa.reset();
-        }
-      },
-      error: (error) => {
-        console.error('Error de condicion de mesa:', error);
       }
     });
   }

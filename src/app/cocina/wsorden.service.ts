@@ -18,10 +18,10 @@ export class WSOrdenService {
 
   private initWebSocketConnection() {
     const stompConfig: StompConfig = {
-      brokerURL: 'ws://192.168.18.9:8080/WSorden/websocket',
+      brokerURL: 'ws://localhost:8080/WSorden/websocket',
       
       webSocketFactory: () => {
-        return new WebSocket('ws://192.168.18.9:8080/WSorden/websocket');
+        return new WebSocket('ws://localhost:8080/WSorden/websocket');
       },
       
       reconnectDelay: 5000,

@@ -66,14 +66,14 @@ export class DistribucionMesasComponent implements OnInit {
     this.mesaSeleccionada = mesa;
     if (mesa.condicion === 'Disponible') {
       mesa.condicion = 'Atendiendo';
-      this.mesaService.updateMesa(mesa)
+      this.mesaService.condicionMesa(mesa)
     }
   }
 
   cerrarModal(): void {
     if (this.mesaSeleccionada != null && this.mesaSeleccionada.condicion == "Atendiendo") {
       this.mesaSeleccionada.condicion = 'Disponible';
-      this.mesaService.updateMesa(this.mesaSeleccionada)
+      this.mesaService.condicionMesa(this.mesaSeleccionada)
     }
     this.mesaSeleccionada = null;
     this.ordenModel = null;
@@ -157,7 +157,6 @@ export class DistribucionMesasComponent implements OnInit {
         if (resp && resp.status === 'success') {
           const ordenID = resp.data.ordenID;
 
-          // Actualizar el ordenID en cada detalle y guardar
           const detallesConID = this.ordenActual.map(detalle => {
             return { ...detalle, ordenID };
           });
@@ -203,12 +202,12 @@ enviarOrden(): void {
       fecha: new Date(),
       condicion: "En cocina",
       montoTotal: this.calcularTotal(),
-      empleadoID: empleadoID // Asignar dinámicamente el empleadoID
+      empleadoID: empleadoID
     };
 
     this.saveOrden(this.ordenModel);
     this.mesaSeleccionada.condicion = 'Pendiente';
-    this.mesaService.updateMesa(this.mesaSeleccionada);
+    this.mesaService.condicionMesa(this.mesaSeleccionada);
     alert('Pedido enviado a cocina');
   } else {
     alert('Debe seleccionar una mesa y agregar productos a la orden antes de enviarla.');
@@ -220,6 +219,7 @@ enviarOrden(): void {
     if (confirm('¿Desea generar el comprobante de pago?')) {
       if (this.mesaSeleccionada) {
         this.mesaSeleccionada.condicion = 'Disponible';
+        this.mesaService.condicionMesa(this.mesaSeleccionada)
         //this.cerrarModal();
       }
     }
