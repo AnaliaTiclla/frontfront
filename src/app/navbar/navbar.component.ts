@@ -30,6 +30,12 @@ export class NavbarComponent implements OnInit {
   getAdminOptions() {
     return [
       {
+        name: 'Reportes', dropdown: true, options: [
+          { name: 'Dashboard', link: '/admin/reportes' }
+        ]
+      },
+
+      {
         name: 'Mantenedores', dropdown: true, options: [
           { name: 'Categoría', link: '/admin/categoria' },
           { name: 'SubCategoría', link: '/admin/subcategorias' },
@@ -40,12 +46,10 @@ export class NavbarComponent implements OnInit {
           { name: 'Mesa', link: '/admin/mesa' }
         ]
       },
+
+      
       { name: 'Consultas', link: '/admin/consultas' },
-      {
-        name: 'Reportes', dropdown: true, options: [
-          { name: 'Dashboard', link: '/admin/reportes' }
-        ]
-      }
+      
     ];
   }
 
