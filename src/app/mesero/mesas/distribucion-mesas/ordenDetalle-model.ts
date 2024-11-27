@@ -1,9 +1,9 @@
 export interface OrdenDetalleModel {
     detalleOrdenId?: number ;
-    productoID: number ;
     cantidad: number ;
-    subTotal: number;
+    subTotal: number ;
     comentario: string;
     condicion: string;
+    productoID: number;
     ordenID: number ;
 }

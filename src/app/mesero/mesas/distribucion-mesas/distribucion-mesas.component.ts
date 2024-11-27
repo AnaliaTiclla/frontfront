@@ -66,14 +66,28 @@ export class DistribucionMesasComponent implements OnInit {
     this.mesaSeleccionada = mesa;
     if (mesa.condicion === 'Disponible') {
       mesa.condicion = 'Atendiendo';
-      this.mesaService.condicionMesa(mesa)
+      this.mesaService.condicionMesa(mesa).subscribe({
+      next: (respuesta) => {
+        console.log('Mesa actualizada exitosamente:', respuesta);
+      },
+      error: (error) => {
+        console.error('Error al actualizar condición:', error);
+      },
+    });
     }
   }
 
   cerrarModal(): void {
     if (this.mesaSeleccionada != null && this.mesaSeleccionada.condicion == "Atendiendo") {
       this.mesaSeleccionada.condicion = 'Disponible';
-      this.mesaService.condicionMesa(this.mesaSeleccionada)
+      this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
+        next: (respuesta) => {
+          console.log('Mesa actualizada exitosamente:', respuesta);
+        },
+        error: (error) => {
+          console.error('Error al actualizar condición:', error);
+        },
+      });
     }
     this.mesaSeleccionada = null;
     this.ordenModel = null;
@@ -175,8 +189,7 @@ export class DistribucionMesasComponent implements OnInit {
       this.ordenService.saveDetalleOrden(detalle).subscribe({
         next: (resp: any) => {
           if (resp && resp.status === 'success') {
-            this.wsOrdenService.sendOrden(detalle);
-            console.log('Holi:', detalle);
+            this.wsOrdenService.sendOrden(resp.data);
           }
         },
         error: (error) => {
@@ -207,7 +220,14 @@ enviarOrden(): void {
 
     this.saveOrden(this.ordenModel);
     this.mesaSeleccionada.condicion = 'Pendiente';
-    this.mesaService.condicionMesa(this.mesaSeleccionada);
+    this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
+      next: (respuesta) => {
+        console.log('Mesa actualizada exitosamente:', respuesta);
+      },
+      error: (error) => {
+        console.error('Error al actualizar condición:', error);
+      },
+    });
     alert('Pedido enviado a cocina');
   } else {
     alert('Debe seleccionar una mesa y agregar productos a la orden antes de enviarla.');
@@ -219,7 +239,14 @@ enviarOrden(): void {
     if (confirm('¿Desea generar el comprobante de pago?')) {
       if (this.mesaSeleccionada) {
         this.mesaSeleccionada.condicion = 'Disponible';
-        this.mesaService.condicionMesa(this.mesaSeleccionada)
+        this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
+          next: (respuesta) => {
+            console.log('Mesa actualizada exitosamente:', respuesta);
+          },
+          error: (error) => {
+            console.error('Error al actualizar condición:', error);
+          },
+        });
         //this.cerrarModal();
       }
     }
