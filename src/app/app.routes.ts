@@ -7,19 +7,15 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () => import('./navbar/navbar.component').then(m => m.NavbarComponent),
     children: [
-      // Agregar esta redirección
-      { path: '', redirectTo: 'reportes', pathMatch: 'full' }, // Esta línea es la nueva
-
+      { path: '', redirectTo: 'reportes', pathMatch: 'full' },
       { path: 'reportes', loadComponent: () => import('./admin/reportes/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-
       { path: 'categoria', loadComponent: () => import('./admin/mantenedores/categoria/categoria/categoria.component').then(m => m.CategoriaComponent) },
       { path: 'subcategorias', loadComponent: () => import('./admin/mantenedores/subcategorias/subcategoria/subcategoria.component').then(m => m.SubcategoriaComponent) },
       { path: 'producto', loadComponent: () => import('./admin/mantenedores/producto/producto.component').then(m => m.ProductoComponent) },
-      { path: 'medida-unidad', loadComponent: () => import('./admin/mantenedores/medida-unidad/medida-unidad/medida-unidad.component').then(m => m.MedidaUnidadComponent) },
       { path: 'usuario', loadComponent: () => import('./admin/mantenedores/usuario/usuario/usuario.component').then(m => m.UsuarioComponent) },
       { path: 'empleado', loadComponent: () => import('./admin/mantenedores/empleado/empleado/empleado.component').then(m => m.EmpleadoComponent) },
       { path: 'mesa', loadComponent: () => import('./admin/mantenedores/mesa/mesa/mesa.component').then(m => m.MesaComponent) },
-
+      { path: 'tipocomprobante', loadComponent: () => import('./admin/mantenedores/tipocomprobante/tipocomprobante.component').then(tp => tp.TipocomprobanteComponent) },
       
     ]
   },

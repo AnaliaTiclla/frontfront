@@ -30,7 +30,7 @@ export class PedidosPendientesComponent implements OnInit {
       ordenes => {
         this.listOrdenes = ordenes.map(orden => ({
           ...orden,
-          condicion: 'PENDIENTE',
+          condicion: 'Pendiente',
           nombreProducto: this.getNombreProducto(orden.productoID)
         }));
         this.filteredOrdenes = [...this.listOrdenes];
@@ -52,11 +52,11 @@ export class PedidosPendientesComponent implements OnInit {
   }
 
   filterPendingOrders() {
-    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'PENDIENTE');
+    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'Pendiente');
   }
 
   filterProcessingOrders() {
-    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'PROCESANDO');
+    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'Procesando');
   }
 
   filterAllOrders() {
@@ -64,7 +64,7 @@ export class PedidosPendientesComponent implements OnInit {
   }
 
   iniciarPreparacion(orden: OrdenDetalleModel) {
-    orden.condicion = 'PROCESANDO';
+    orden.condicion = 'Procesando';
     this.ordenService.updateDetalleOrden(orden).subscribe({
       next: (respuesta) => {
         console.log('Orden actualizada exitosamente:', respuesta);
@@ -78,7 +78,7 @@ export class PedidosPendientesComponent implements OnInit {
 
 
   marcarCompletado(orden: OrdenDetalleModel) {
-    orden.condicion = 'COMPLETADO';
+    orden.condicion = 'Completado';
     this.ordenService.updateDetalleOrden(orden).subscribe({
       next: (respuesta) => {
         console.log('Orden actualizada exitosamente:', respuesta);

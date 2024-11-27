@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MedidaUnidadComponent } from './medida-unidad.component';
+import { TipocomprobanteComponent } from './tipocomprobante.component';
 
-describe('MedidaUnidadComponent', () => {
-  let component: MedidaUnidadComponent;
-  let fixture: ComponentFixture<MedidaUnidadComponent>;
+describe('TipocomprobanteComponent', () => {
+  let component: TipocomprobanteComponent;
+  let fixture: ComponentFixture<TipocomprobanteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MedidaUnidadComponent]
+      imports: [TipocomprobanteComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MedidaUnidadComponent);
+    fixture = TestBed.createComponent(TipocomprobanteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
