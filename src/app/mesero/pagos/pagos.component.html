@@ -1,90 +1,84 @@
-<div class="col-md-12 p-2">
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#categoriaModal">
-      <i class="fa fa-save"></i> Pago
-    </button>
-    <table class="table mt-2 table-bordered">
+<div class="payment-container">
+  <!-- Order Details Section -->
+  <div class="order-details">
+    <h2>DETALLES DEL PEDIDO</h2>
+    <table class="table table-bordered">
       <thead class="table-primary">
         <tr>
-          <th>ID</th>
-          <th>Cantidad</th>
           <th>Producto</th>
-          <th>Comentario</th>
-          <th>Condicion</th>
+          <th>Cantidad</th>
           <th>SubTotal</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of detallesOrden">
-          <td>{{ item.detalleOrdenId }}</td>
+          <td>{{ getNombreProducto(item.productoID) }}</td>
           <td>{{ item.cantidad }}</td>
-          <td>{{ item.productoID }}</td>
-          <td>{{ item.comentario }}</td>
-          <td>{{ item.condicion }}</td>
-          <td>{{ item.subTotal}}</td>
+          <td>{{ item.subTotal | currency:'PEN ' }}</td>
         </tr>
       </tbody>
+      <tfoot class="table-light">
+        <tr>
+          <td colspan="2" class="text-end"><strong>Total:</strong></td>
+          <td><strong>{{ orden?.montoTotal | currency:'PEN ' }}</strong></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 
-  <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5"> Realizar Pago </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="generarPago()"></button>
+  <!-- Payment Form Section -->
+  <div class="payment-form">
+    <h2>Realizar Pago</h2>
+    <form [formGroup]="pagoForm" (ngSubmit)="generarPago()">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Método de pago</label>
+          <select class="form-select" formControlName="metodoPago">
+            <option value="">Seleccione un método de pago</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="billetera digital">Billetera Digital</option>
+          </select>
         </div>
-        <div class="modal-body">
-          <form [formGroup]="pagoForm">
-            <div class="mb-4 row">
-              <label class="col-sm-2 col-form-label">Método de pago</label>
-              <div class="col-sm-10">
-                <select class="form-control" formControlName="metodoPago">
-                    <option value="">Seleccione un método de pago</option>
-                    <option value="efectivo">Efectivo</option>
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="billetera digital">Billetera Digital</option>
-                </select>
-                </div>
-            </div>
-            <div class="mb-4 row">
-                <label class="col-sm-2 col-form-label">Tipo de comprobante</label>
-                <div class="col-sm-10">
-                  <select class="form-select" formControlName="tipoComprobante" required>
-                    <option [ngValue]="null">Seleccione una tipo de comprobante</option>
-                    <option *ngFor="let tp of tiposComprobante" [ngValue]="tp.tipoComprobanteId">
-                      {{ tp.nombre }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            <div class="mb-4 row">
-              <label class="col-sm-2 col-form-label">Tipo de documento</label>
-              <div class="col-sm-10">
-                <select class="form-control" formControlName="tipoDocumento">
-                    <option value="">Seleccione un tipo de documento</option>
-                    <option value="dni">DNI</option>
-                    <option value="ruc">RUC</option>
-                  </select>
-              </div>
-            </div>
-            <div class="mb-4 row">
-              <label class="col-sm-2 col-form-label">Número de documento</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" formControlName="numeroDocumento" rows="3" required>
-              </div>
-            </div>
-            <div class="mb-4 row">
-                <label class="col-sm-2 col-form-label">Código de iziPay</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" formControlName="izipayComprobante" required>
-                </div>
-              </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-warning btn-sm" (click)="generarPago()">Generar Pago</button>
+        <div class="col-md-6">
+          <label class="form-label">Tipo de comprobante</label>
+          <select class="form-select" formControlName="tipoComprobante">
+            <option [ngValue]="null">Seleccione tipo de comprobante</option>
+            <option *ngFor="let tp of tiposComprobante" [ngValue]="tp.tipoComprobanteId">
+              {{ tp.nombre }}
+            </option>
+          </select>
         </div>
       </div>
-    </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Tipo de documento</label>
+          <select class="form-select" formControlName="tipoDocumento">
+            <option value="">Seleccione tipo de documento</option>
+            <option value="dni">DNI</option>
+            <option value="ruc">RUC</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Número de documento</label>
+          <input type="text" class="form-control" formControlName="numeroDocumento">
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-12">
+          <label class="form-label">Código de iziPay</label>
+          <input type="text" class="form-control" formControlName="izipayComprobante">
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" routerLink="/mesero/mesas">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="pagoForm.invalid">
+          Generar Pago
+        </button>
+      </div>
+    </form>
   </div>
+</div>

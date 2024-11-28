@@ -10,6 +10,8 @@ import { PagoModel } from './pago-model';
 import { PagoDetalleModel } from './pagoDetalle-model';
 import { TipocomprobanteService } from '../../admin/mantenedores/tipocomprobante/tipocomprobante.service';
 import { TipocomprobanteModel } from '../../admin/mantenedores/tipocomprobante/tipocomprobante-model';
+import { ProductoModel } from '../../admin/mantenedores/producto/producto-model';
+import { ProductoService } from '../../admin/mantenedores/producto/producto.service';
 
 @Component({
   selector: 'app-pagos',
@@ -28,10 +30,14 @@ export class PagosComponent implements OnInit {
   private detalleOrdenService = inject(OrdenService);
   private tipoComprobanteService = inject(TipocomprobanteService);
   private pagosService = inject(PagosService);
+  private productoService = inject(ProductoService);   
 
+  
   orden: OrdenModel | null = null;
   detallesOrden: OrdenDetalleModel[] = [];
   tiposComprobante: TipocomprobanteModel[] = [];
+  listProductos: ProductoModel[] = [];
+
   
   pagoForm = new FormGroup({
     metodoPago: new FormControl('', Validators.required),
@@ -50,6 +56,7 @@ export class PagosComponent implements OnInit {
       console.log('No se encontraron datos compartidos.');
     }
     this.cargarTiposComprobante();
+    this.loadProductos();
   }
 
   cargarDetallesOrden(ordenId: number): void {
@@ -121,4 +128,23 @@ export class PagosComponent implements OnInit {
       }
     });
   }
+
+  getNombreProducto(productoId: number): string {
+    const producto = this.listProductos.find(p => p.productoID === productoId);
+    return producto?.nombre || '';
+  }
+
+  loadProductos(): void {
+    this.productoService.getProducto().subscribe({
+      next: (resp: any) => {
+        if (resp?.data) {
+          this.listProductos = resp.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar productos:', error);
+      }
+    });
+  }
+
 }

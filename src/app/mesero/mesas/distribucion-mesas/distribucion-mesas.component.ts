@@ -29,7 +29,7 @@ export class DistribucionMesasComponent implements OnInit {
   private mesaService = inject(MesaService);
   private subcategoriaService = inject(SubcategoriaService);
   private categoriaService = inject(CategoriaService);
-  private productoService = inject(ProductoService);
+  private productoService = inject(ProductoService);   
   private ordenService = inject(OrdenService);
   private loginService = inject(LoginService);
   private wsOrdenService = inject(WSOrdenService);
