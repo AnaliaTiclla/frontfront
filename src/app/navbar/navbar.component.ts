@@ -13,7 +13,6 @@ import { RouterModule, Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   userRole: string = ''; 
 
-  // Inyectar Router en el constructor
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -21,7 +20,6 @@ export class NavbarComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    // Ahora puedes usar this.router para navegar
     this.router.navigate(['/login']);
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');

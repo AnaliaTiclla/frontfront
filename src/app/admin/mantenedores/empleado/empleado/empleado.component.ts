@@ -35,7 +35,6 @@ export class EmpleadoComponent implements OnInit {
   list() {
     this.empleadoService.getEmpleado().subscribe({
       next: (resp: any) => {
-        // Asumiendo que la respuesta tiene la estructura { status: 'success', data: [...] }
         if (resp && resp.data) {
           this.listEmpleados = resp.data;
         }

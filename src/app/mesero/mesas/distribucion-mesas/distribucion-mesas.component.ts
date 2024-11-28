@@ -14,6 +14,7 @@ import { OrdenService } from '../orden.service';
 import { OrdenModel } from './orden-model';
 import { LoginService } from '../../../login/login.service';
 import { WSOrdenService } from '../../../cocina/wsorden.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-distribucion-mesas',
@@ -41,6 +42,8 @@ export class DistribucionMesasComponent implements OnInit {
   subcategoriaActual: number = 1;
   ordenActual: OrdenDetalleModel[] = [];
   ordenModel: OrdenModel | null = null;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.list();
@@ -235,22 +238,20 @@ enviarOrden(): void {
 }
   
 
-  mostrarPago(): void {
-    if (confirm('¿Desea generar el comprobante de pago?')) {
-      if (this.mesaSeleccionada) {
-        this.mesaSeleccionada.condicion = 'Disponible';
-        this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
-          next: (respuesta) => {
-            console.log('Mesa actualizada exitosamente:', respuesta);
-          },
-          error: (error) => {
-            console.error('Error al actualizar condición:', error);
-          },
-        });
-        //this.cerrarModal();
-      }
+mostrarPago(): void {
+  if (confirm('¿Desea generar el comprobante de pago?')) {
+    if (this.mesaSeleccionada && this.ordenModel) {
+      this.router.navigate(['/mesero/pagos'], {
+        state: { 
+          orden: this.ordenModel,
+          detalleOrden: this.ordenActual
+        }
+      });
+    } else {
+      alert('No hay una orden asociada para realizar el pago.');
     }
   }
+}
 
   loadSubcategorias(): void {
     this.subcategoriaService.getSubcategoria().subscribe({

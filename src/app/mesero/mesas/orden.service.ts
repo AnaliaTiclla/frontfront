@@ -29,6 +29,12 @@ export class OrdenService {
     );
   }
 
+  getDetalleOrden(id: number): Observable<OrdenDetalleModel[]> {
+    return this.http.get<OrdenDetalleModel[]>(`${this.URL_API}/detalleOrden/listar${id}`).pipe(
+      map(res => res)
+    );
+  }
+
   saveDetalleOrden(request: OrdenDetalleModel): Observable<any> {
     return this.http.post<any>(`${this.URL_API}/detalleOrden/guardar`, request).pipe(
       map(resp => resp)
