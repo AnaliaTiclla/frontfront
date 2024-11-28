@@ -5,4 +5,4 @@ export interface PagoModel {
     estadoPago: string;
     ordenID: number;
     tipocomprobanteID: number;
-} 
+}
