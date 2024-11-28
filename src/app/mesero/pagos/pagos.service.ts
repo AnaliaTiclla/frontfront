@@ -40,4 +40,17 @@ export class PagosService {
       map(resp => resp)
     );
   }
+
+  private data: any = null;
+
+  setData(data: any): void {
+    this.data = data;
+    console.log('Ahya:', data);
+  }
+
+  getData(): any {
+    const temp = this.data;
+    this.data = null;
+    return temp;
+  }
 }

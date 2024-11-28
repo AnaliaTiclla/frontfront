@@ -30,7 +30,7 @@ export class OrdenService {
   }
 
   getDetalleOrden(id: number): Observable<OrdenDetalleModel[]> {
-    return this.http.get<OrdenDetalleModel[]>(`${this.URL_API}/detalleOrden/listar${id}`).pipe(
+    return this.http.get<OrdenDetalleModel[]>(`${this.URL_API}/detalleOrden/listar/${id}`).pipe(
       map(res => res)
     );
   }

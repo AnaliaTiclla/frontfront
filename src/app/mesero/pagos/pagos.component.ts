@@ -5,7 +5,7 @@ import { PagosService } from './pagos.service';
 import { OrdenDetalleModel } from '../mesas/distribucion-mesas/ordenDetalle-model';
 import { OrdenService } from '../mesas/orden.service';
 import { OrdenModel } from '../mesas/distribucion-mesas/orden-model';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { PagoModel } from './pago-model';
 import { PagoDetalleModel } from './pagoDetalle-model';
 import { TipocomprobanteService } from '../../admin/mantenedores/tipocomprobante/tipocomprobante.service';
@@ -15,6 +15,7 @@ import { TipocomprobanteModel } from '../../admin/mantenedores/tipocomprobante/t
   selector: 'app-pagos',
   standalone: true,
   imports: [ 
+    RouterModule,
     CommonModule, 
     FormsModule, 
     ReactiveFormsModule
@@ -41,22 +42,22 @@ export class PagosComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.orden = navigation.extras.state['orden'];
-      
-      if (this.orden?.ordenID !== undefined) {
-        this.cargarDetallesOrden(this.orden.ordenID);
-      }
-
-      this.cargarTiposComprobante();
+    const data = this.pagosService.getData();
+    if (data) {
+      this.orden = data.orden;
+      this.cargarDetallesOrden(this.orden?.ordenID!);
+    } else {
+      console.log('No se encontraron datos compartidos.');
     }
+    this.cargarTiposComprobante();
   }
 
   cargarDetallesOrden(ordenId: number): void {
     this.detalleOrdenService.getDetalleOrden(ordenId).subscribe({
-      next: (detalles) => {
-        this.detallesOrden = detalles;
+      next: (resp: any) => {
+        if (resp && resp.data) {
+        this.detallesOrden = resp.data;
+        }
       },
       error: (error) => {
         console.error('Error al cargar detalles de orden', error);
@@ -66,27 +67,15 @@ export class PagosComponent implements OnInit {
 
   cargarTiposComprobante(): void {
     this.tipoComprobanteService.getTipocomprobante().subscribe({
-      next: (tipos) => {
-        this.tiposComprobante = tipos;
+      next: (resp: any) => {
+        if (resp && resp.data) {
+        this.tiposComprobante = resp.data;
+        }
       },
       error: (error) => {
         console.error('Error al cargar tipos de comprobante', error);
       }
     });
-  }
-
-  abrirModalPago(): void {
-    const modal = document.getElementById('pagoModal');
-    if (modal) {
-      modal.style.display = 'block';
-    }
-  }
-
-  cerrarModalPago(): void {
-    const modal = document.getElementById('pagoModal');
-    if (modal) {
-      modal.style.display = 'none';
-    }
   }
 
   generarPago(): void {
@@ -119,7 +108,6 @@ export class PagosComponent implements OnInit {
           
           this.pagosService.saveDetallePago(detallesPago).subscribe({
             next: () => {
-              this.cerrarModalPago();
               this.router.navigate(['/mesero/mesas']);
             },
             error: (error) => {

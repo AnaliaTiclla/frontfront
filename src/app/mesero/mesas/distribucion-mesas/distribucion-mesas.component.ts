@@ -14,12 +14,13 @@ import { OrdenService } from '../orden.service';
 import { OrdenModel } from './orden-model';
 import { LoginService } from '../../../login/login.service';
 import { WSOrdenService } from '../../../cocina/wsorden.service';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { PagosService } from '../../pagos/pagos.service';
 
 @Component({
   selector: 'app-distribucion-mesas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './distribucion-mesas.component.html',
   styleUrls: ['./distribucion-mesas.component.css']
 })
@@ -32,6 +33,7 @@ export class DistribucionMesasComponent implements OnInit {
   private ordenService = inject(OrdenService);
   private loginService = inject(LoginService);
   private wsOrdenService = inject(WSOrdenService);
+  private pagosService = inject(PagosService);
 
   
   listMesa: MesaModelModel[] = [];
@@ -172,10 +174,11 @@ export class DistribucionMesasComponent implements OnInit {
     this.ordenService.saveOrden(orden).subscribe({
       next: (resp: any) => {
         if (resp && resp.status === 'success') {
+          this.ordenModel = resp.data;
           const ordenID = resp.data.ordenID;
-
+          
           const detallesConID = this.ordenActual.map(detalle => {
-            return { ...detalle, ordenID };
+            return { ...detalle, ordenID};
           });
   
           this.guardarDetalles(detallesConID);
@@ -241,17 +244,17 @@ enviarOrden(): void {
 mostrarPago(): void {
   if (confirm('¿Desea generar el comprobante de pago?')) {
     if (this.mesaSeleccionada && this.ordenModel) {
-      this.router.navigate(['/mesero/pagos'], {
-        state: { 
-          orden: this.ordenModel,
-          detalleOrden: this.ordenActual
-        }
-      });
+      const stateData = { 
+        orden: this.ordenModel
+      };
+      this.pagosService.setData(stateData);
+      this.router.navigate(['/mesero/pagos']);
     } else {
       alert('No hay una orden asociada para realizar el pago.');
     }
   }
 }
+
 
   loadSubcategorias(): void {
     this.subcategoriaService.getSubcategoria().subscribe({
