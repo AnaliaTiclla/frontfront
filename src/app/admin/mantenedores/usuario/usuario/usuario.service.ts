@@ -24,18 +24,4 @@ export class UsuarioService {
       map(resp => resp)
     );
   }
-
-  updateUsuario(request: UsuarioModelModel): Observable<any> {
-    return this.http.post<any>(`${this.URL_API}/actualizar`, request).pipe(
-      map(resp => resp)
-    );
-  }
-
-  deleteUsuario(id: number): Observable<any> {
-    return this.http.get<any>(`${this.URL_API}/inhabilitar/${id}`).pipe(
-      map(resp => resp)
-    );
-  }
-
-
 }

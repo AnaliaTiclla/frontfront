@@ -142,9 +142,6 @@ export class PagosComponent implements OnInit {
       tipocomprobanteID: Number(this.pagoForm.get('tipoComprobante')?.value)
     };
 
-    this.orden.condicion = 'Completado';
-    this.ordenService.updateOrden(this.orden)
-
     const detallesPago: PagoDetalleModel = {
       tipoDoc: this.pagoForm.get('tipoDocumento')?.value || '',
       numeroDoc: this.pagoForm.get('numeroDocumento')?.value || '',
@@ -154,7 +151,6 @@ export class PagosComponent implements OnInit {
       total: parseFloat(this.orden.montoTotal.toFixed(2)),
       pagoID: 0
     };
-    
 
     this.pagosService.savePago(datosPago).subscribe({
       next: (respPago) => {
@@ -163,6 +159,8 @@ export class PagosComponent implements OnInit {
           
           this.pagosService.saveDetallePago(detallesPago).subscribe({
             next: () => {
+              alert('Pago realizado con existo.');
+              this.actualizarOrden(this.orden!);
               this.router.navigate(['/mesero/mesas']);
             },
             error: (error) => {
@@ -173,6 +171,18 @@ export class PagosComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al guardar pago', error);
+      }
+    });
+  }
+
+  actualizarOrden(orden: OrdenModel): void {
+    orden.condicion = "Completado";
+    this.ordenService.updateOrden(orden).subscribe({
+      next: () => {
+        console.log("Se actualizó");
+      },
+      error: (error) => {
+        console.error('Error al guardar detalle de pago', error);
       }
     });
   }

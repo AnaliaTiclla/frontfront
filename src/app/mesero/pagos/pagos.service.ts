@@ -8,6 +8,8 @@ import { PagoDetalleModel } from './pagoDetalle-model';
   providedIn: 'root'
 })
 export class PagosService {
+  private apiUrl = 'https://apiperu.dev/api/dni';
+  private token = 'INGRESAR_TOKEN_AQUI';
   private URL_API: string = 'http://localhost:8080/mozo';
   private http = inject(HttpClient);
 

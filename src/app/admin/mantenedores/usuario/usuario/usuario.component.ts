@@ -19,12 +19,8 @@ export class UsuarioComponent implements OnInit {
   private empleadoService = inject(EmpleadoService);
 
   listaEmpleados: EmpleadoModelModel[] = [];
-  
-
-
   listUsuarios: UsuarioModelModel[] = [];
   formUsuario: FormGroup = new FormGroup({});
-  isUpdate: boolean = false;
 
   ngOnInit(): void {
     this.list();
@@ -52,7 +48,6 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-
   list() {
     this.usuarioService.getUsuario().subscribe({
       next: (resp: any) => {
@@ -65,8 +60,6 @@ export class UsuarioComponent implements OnInit {
       }
     });
   }
-
- 
 
   save() {
     const selectedEmpleado = this.listaEmpleados.find(e => e.empleadoID.toString() === this.formUsuario.get('empleadoID')?.value);
@@ -91,49 +84,8 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  update() {
-    this.usuarioService.updateUsuario(this.formUsuario.value).subscribe({
-      next: (resp: any) => {
-        if (resp && resp.status === 'success') {
-          this.list();
-          this.formUsuario.reset();
-        }
-      },
-      error: (error) => {
-        console.error('Error al actualizar usuario:', error);
-      }
-    });
-  }
-
-  delete(id: number) {
-    this.usuarioService.deleteUsuario(id).subscribe({
-      next: (resp: any) => {
-        if (resp && resp.status === 'success') {
-          this.list();
-        }
-      },
-      error: (error) => {
-        console.error('Error al eliminar usuario:', error);
-      }
-    });
-  }
-
   newEmpleado() {
-    this.isUpdate = false;
     this.formUsuario.reset();
-  }
-
-  selectItem(item: UsuarioModelModel) {
-    this.isUpdate = true;
-    this.formUsuario.patchValue({
-      usuarioID: item.usuarioID,
-      username: item.username,
-      password: "",
-      estado: item.estado,
-      empleadoID: item.empleadoID,
-      rol: item.rol,
-
-    });
   }
 
   getEmpleadoName(empleadoID: number): string {

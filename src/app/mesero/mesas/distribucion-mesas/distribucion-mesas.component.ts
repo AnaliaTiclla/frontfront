@@ -45,7 +45,6 @@ export class DistribucionMesasComponent implements OnInit {
   ordenActual: OrdenDetalleModel[] = [];
   ordenModel: OrdenModel | null = null;
   ordenAntigua: OrdenModel | null = null;
-  ordenEnviada: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -169,7 +168,6 @@ export class DistribucionMesasComponent implements OnInit {
           const detallesConID = this.ordenActual.map(detalle => {
             return { ...detalle, ordenID};
           });
-          this.ordenEnviada = true;
           this.guardarDetalles(detallesConID);
         }
       },
@@ -214,7 +212,7 @@ enviarOrden(): void {
     };
 
     this.saveOrden(this.ordenModel);
-    this.mesaSeleccionada.condicion = 'Pendiente';
+    this.mesaSeleccionada.condicion = 'Ocupada';
     this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
       next: (respuesta) => {
         console.log('Mesa actualizada exitosamente:', respuesta);
@@ -248,6 +246,7 @@ agregarProductos(): void {
                 ordenID
               }));
               this.guardarDetalles(detallesConID);
+              alert('Se agregaron más productos a la orden.');
             },
             error: (error) => {
               console.error('Error al actualizar la orden:', error);
@@ -274,7 +273,16 @@ mostrarPago(): void {
       };  
       this.pagosService.setData(stateData);
       this.router.navigate(['/mesero/pagos']);
-      this.ordenEnviada = false;
+      
+      this.mesaSeleccionada.condicion = 'Disponible';
+      this.mesaService.condicionMesa(this.mesaSeleccionada).subscribe({
+      next: (respuesta) => {
+        console.log('Mesa actualizada exitosamente:', respuesta);
+      },
+      error: (error) => {
+        console.error('Error al actualizar condición:', error);
+      },
+    });
     } else {
       alert('No hay una orden asociada para realizar el pago.');
     }

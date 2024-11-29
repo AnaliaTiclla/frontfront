@@ -26,7 +26,7 @@ export class SubcategoriaComponent implements OnInit {
     this.list();
     this.loadCategorias();
     this.formSubcategoria = new FormGroup({
-      subcategoriaID: new FormControl(),
+      subCategoriaId: new FormControl(),
       categoriaID: new FormControl(''),
       nombre: new FormControl(''),
       descripcion: new FormControl(''),
@@ -88,7 +88,6 @@ export class SubcategoriaComponent implements OnInit {
     if (this.formSubcategoria.valid) {
       const subcategoria = this.formSubcategoria.value;
       
-      // Asegurarse que categoriaID sea un número
       subcategoria.categoriaID = Number(subcategoria.categoriaID);
       
       this.subcategoriaService.updateSubcategoria(subcategoria).subscribe({
@@ -128,7 +127,7 @@ export class SubcategoriaComponent implements OnInit {
   selectItem(item: SubcategoriaModel) {
     this.isUpdate = true;
     this.formSubcategoria.patchValue({
-      subcategoriaID: item.subCategoriaId,
+      subCategoriaId: item.subCategoriaId,
       categoriaID: item.categoriaID,
       nombre: item.nombre,
       descripcion: item.descripcion,
