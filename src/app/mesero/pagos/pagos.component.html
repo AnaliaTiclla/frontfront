@@ -1,4 +1,5 @@
 <div class="payment-container">
+  <!-- Order Details Section -->
   <div class="order-details">
     <h2>DETALLES DEL PEDIDO</h2>
     <table class="table table-bordered">
@@ -25,6 +26,7 @@
     </table>
   </div>
 
+  <!-- Payment Form Section -->
   <div class="payment-form">
     <h2>Realizar Pago</h2>
     <form [formGroup]="pagoForm" (ngSubmit)="generarPago()">
@@ -54,9 +56,8 @@
           <label class="form-label">Tipo de documento</label>
           <select class="form-select" formControlName="tipoDocumento">
             <option value="">Seleccione tipo de documento</option>
-            <option value="No requiere">No requiere</option>
-            <option value="DNI">DNI</option>
-            <option value="RUC">RUC</option>
+            <option value="dni">DNI</option>
+            <option value="ruc">RUC</option>
           </select>
         </div>
         <div class="col-md-6">
