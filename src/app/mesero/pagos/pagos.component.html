@@ -34,7 +34,7 @@
         <div class="col-md-6">
           <label class="form-label">Método de pago</label>
           <select class="form-select" formControlName="metodoPago">
-            <option value="">Seleccione un método de pago</option>
+            <option [ngValue]="null">Seleccione metodo de pago</option>
             <option value="efectivo">Efectivo</option>
             <option value="tarjeta">Tarjeta</option>
             <option value="billetera digital">Billetera Digital</option>

@@ -44,6 +44,8 @@ export class DistribucionMesasComponent implements OnInit {
   subcategoriaActual: number = 1;
   ordenActual: OrdenDetalleModel[] = [];
   ordenModel: OrdenModel | null = null;
+  ordenAntigua: OrdenModel | null = null;
+  ordenEnviada: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -95,8 +97,8 @@ export class DistribucionMesasComponent implements OnInit {
       });
     }
     this.mesaSeleccionada = null;
-    this.ordenModel = null;
     this.ordenActual = [];
+    this.ordenModel = null;
   }
 
   getProductosPorSubcategoria(): ProductoModel[] {
@@ -167,7 +169,7 @@ export class DistribucionMesasComponent implements OnInit {
           const detallesConID = this.ordenActual.map(detalle => {
             return { ...detalle, ordenID};
           });
-  
+          this.ordenEnviada = true;
           this.guardarDetalles(detallesConID);
         }
       },
@@ -206,7 +208,7 @@ enviarOrden(): void {
     this.ordenModel = {
       mesaID: this.mesaSeleccionada.mesaID,
       fecha: new Date(),
-      condicion: "En cocina",
+      condicion: "Atendiendo",
       montoTotal: this.calcularTotal(),
       empleadoID: empleadoID
     };
@@ -227,14 +229,52 @@ enviarOrden(): void {
   }
 }
 
+agregarProductos(): void {
+  if (!this.mesaSeleccionada?.mesaID) {
+    return;
+  }
+  this.ordenService.getOrdenAntiguo(this.mesaSeleccionada.mesaID).subscribe({
+    next: (resp: any) => {
+      if (resp && resp.status === 'success' && resp.data) {
+        this.ordenModel = resp.data;
+        if (this.ordenModel) {
+          const nuevoMontoTotal = (this.ordenModel.montoTotal || 0) + this.calcularTotal();
+          this.ordenModel.montoTotal = parseFloat(nuevoMontoTotal.toFixed(2));
+          this.ordenService.updateOrden(this.ordenModel).subscribe({
+            next: () => {
+              const ordenID = resp.data.ordenID;
+              const detallesConID = this.ordenActual.map(detalle => ({
+                ...detalle,
+                ordenID
+              }));
+              this.guardarDetalles(detallesConID);
+            },
+            error: (error) => {
+              console.error('Error al actualizar la orden:', error);
+            }
+          });
+        } else {
+          console.error('Error: ordenModel no está inicializado.');
+        }
+      } else {
+        console.warn('No se encontró una orden válida para la mesa seleccionada.');
+      }
+    },
+    error: (error) => {
+      console.error('Error al obtener la orden antigua:', error);
+    }
+  });
+}
+
 mostrarPago(): void {
   if (confirm('¿Desea generar el comprobante de pago?')) {
     if (this.mesaSeleccionada && this.ordenModel) {
       const stateData = { 
         orden: this.ordenModel
-      };
+      };  
       this.pagosService.setData(stateData);
       this.router.navigate(['/mesero/pagos']);
+      this.ordenEnviada = false;
     } else {
       alert('No hay una orden asociada para realizar el pago.');
     }

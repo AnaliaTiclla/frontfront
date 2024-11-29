@@ -27,7 +27,6 @@ export class MesaComponent implements OnInit {
       capacidad: new FormControl(),
       condicion: new FormControl(''),
       estado: new FormControl(true),
-
     });
   }
 

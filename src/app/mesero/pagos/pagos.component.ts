@@ -27,7 +27,7 @@ import { ProductoService } from '../../admin/mantenedores/producto/producto.serv
 })
 export class PagosComponent implements OnInit {
   private router = inject(Router);
-  private detalleOrdenService = inject(OrdenService);
+  private ordenService = inject(OrdenService);
   private tipoComprobanteService = inject(TipocomprobanteService);
   private pagosService = inject(PagosService);
   private productoService = inject(ProductoService);   
@@ -59,7 +59,6 @@ export class PagosComponent implements OnInit {
   }
 
   setupFormSubscriptions(): void {
-    // Manejar cambios en método de pago
     this.pagoForm.get('metodoPago')?.valueChanges.subscribe(metodoPago => {
       const izipayControl = this.pagoForm.get('izipayComprobante');
       if (metodoPago === 'tarjeta' || metodoPago === 'billetera digital') {
@@ -70,14 +69,12 @@ export class PagosComponent implements OnInit {
       }
     });
 
-    // Manejar cambios en tipo de comprobante
     this.pagoForm.get('tipoComprobante')?.valueChanges.subscribe(tipoComprobante => {
       const tipoDocControl = this.pagoForm.get('tipoDocumento');
       const numDocControl = this.pagoForm.get('numeroDocumento');
       
       const comprobante = this.tiposComprobante.find(tc => tc.tipoComprobanteId === Number(tipoComprobante));
       
-      // Reset y deshabilitar por defecto
       tipoDocControl?.disable();
       numDocControl?.disable();
       tipoDocControl?.setValue('');
@@ -87,7 +84,6 @@ export class PagosComponent implements OnInit {
         switch (comprobante.nombre.toLowerCase()) {
           case 'sin comprobante':
           case 'boleta simple':
-            // Mantener ambos campos deshabilitados y vacíos
             break;
           case 'boleta':
             tipoDocControl?.setValue('dni');
@@ -100,7 +96,6 @@ export class PagosComponent implements OnInit {
             numDocControl?.enable();
             break;
           default:
-            // Para otros tipos de comprobante, habilitar ambos campos
             tipoDocControl?.enable();
             numDocControl?.enable();
         }
@@ -109,7 +104,7 @@ export class PagosComponent implements OnInit {
   }
 
   cargarDetallesOrden(ordenId: number): void {
-    this.detalleOrdenService.getDetalleOrden(ordenId).subscribe({
+    this.ordenService.getDetalleOrden(ordenId).subscribe({
       next: (resp: any) => {
         if (resp && resp.data) {
           this.detallesOrden = resp.data;
@@ -142,25 +137,29 @@ export class PagosComponent implements OnInit {
     const datosPago: PagoModel = {
       fecha: new Date(),
       metodoPago: this.pagoForm.get('metodoPago')?.value || '',
-      estadoPago: 'COMPLETADO',
+      estadoPago: 'Completado',
       ordenID: this.orden.ordenID!,
       tipocomprobanteID: Number(this.pagoForm.get('tipoComprobante')?.value)
     };
+
+    this.orden.condicion = 'Completado';
+    this.ordenService.updateOrden(this.orden)
 
     const detallesPago: PagoDetalleModel = {
       tipoDoc: this.pagoForm.get('tipoDocumento')?.value || '',
       numeroDoc: this.pagoForm.get('numeroDocumento')?.value || '',
       iziPay: this.pagoForm.get('izipayComprobante')?.value || '',
-      subTotal: this.orden.montoTotal * 0.82,
-      igv: this.orden.montoTotal * 0.18,
-      total: this.orden.montoTotal,
-      pagoID: 1
+      subTotal: parseFloat((this.orden.montoTotal * 0.82).toFixed(2)),
+      igv: parseFloat((this.orden.montoTotal * 0.18).toFixed(2)),
+      total: parseFloat(this.orden.montoTotal.toFixed(2)),
+      pagoID: 0
     };
+    
 
     this.pagosService.savePago(datosPago).subscribe({
       next: (respPago) => {
         if (respPago.status === 'success') {
-          detallesPago.pagoID = respPago.data.pagoID;
+          detallesPago.pagoID = respPago.data.pagoId;
           
           this.pagosService.saveDetallePago(detallesPago).subscribe({
             next: () => {

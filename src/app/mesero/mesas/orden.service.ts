@@ -11,11 +11,11 @@ export class OrdenService {
   private URL_API: string = 'http://localhost:8080/mozo';
   private http = inject(HttpClient);
 
-  /*getOrden(): Observable<OrdenModel[]> {
-    return this.http.get<OrdenModel[]>(`${this.URL_API}/orden/listar`).pipe(
+  getOrdenAntiguo(mesaid: number): Observable<OrdenModel> {
+    return this.http.get<OrdenModel>(`${this.URL_API}/orden/obtenerOrden/${mesaid}`).pipe(
       map(res => res)
     );
-  }*/
+  }
 
   saveOrden(request: OrdenModel): Observable<any> {
     return this.http.post<any>(`${this.URL_API}/orden/guardar`, request).pipe(
