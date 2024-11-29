@@ -32,8 +32,7 @@ export class WSOrdenService {
         console.log(new Date(), str);
       },
       
-      onConnect: (frame) => {
-        console.log('Connected: ' + frame);
+      onConnect: () => {
         this.client.subscribe('/escuchar/canal1', (message) => {
           const orden = JSON.parse(message.body);
           const currentOrdenes = this.ordenesSubject.value;
@@ -42,35 +41,30 @@ export class WSOrdenService {
       },
       
       onStompError: (frame) => {
-        console.error('Broker reported error: ' + frame.headers['message']);
-        console.error('Additional details: ' + frame.body);
+        console.error('Error: ' + frame.headers['message']);
+        console.error('Detalle adicional: ' + frame.body);
       },
       
       onDisconnect: (frame) => {
-        console.log('Disconnected:', frame);
+        console.log('Desconectado:', frame);
       }
     };
 
-    // Initialize client
     this.client = new Client(stompConfig);
     
-    // Activate connection
     this.client.activate();
   }
 
-  // Modify send method to ensure connection
   sendOrden(orden: OrdenDetalleModel) {
     if (!this.client) {
-      console.error('WebSocket client not initialized');
+      console.error('WebSocket cliente no inicializado');
       return;
     }
 
-    // Ensure client is connected before sending
     if (!this.client.connected) {
-      console.warn('WebSocket not connected. Attempting to reconnect...');
+      console.warn('WebSocket no conectado.');
       this.client.activate();
       
-      // Wait a bit before sending
       setTimeout(() => {
         this.sendOrdenInternal(orden);
       }, 1000);
@@ -86,9 +80,8 @@ export class WSOrdenService {
         destination: '/enviar/orden1',
         body: JSON.stringify(orden)
       });
-      console.log('Order sent successfully', orden);
     } catch (error) {
-      console.error('Failed to send order', error);
+      console.error('Fallo al enviar una orden', error);
     }
   }
 }
