@@ -51,9 +51,9 @@
                 <span class="form-control-plaintext">{{ formProducto.get('productoID')?.value }}</span>            </div>
             </div>
             <div class="mb-4 row">
-                <label class="col-sm-2 col-form-label">Subcategoria</label>
-                <div class="col-sm-10">
-                  <select class="form-select" formControlName="subcategoriaID" required>
+                <label class="col-sm-2 col-form-label me-2">Subcategoria</label>
+                <div class="col-12">
+                  <select class="form-select w-100" formControlName="subcategoriaID" required>
                     <option [ngValue]="null">Seleccione una subcategoría</option>
                     <option *ngFor="let sub of listSubcategoria" [ngValue]="sub.subCategoriaId">
                       {{ sub.nombre }}
@@ -68,9 +68,9 @@
               </div>
             </div>
             <div class="mb-4 row">
-              <label class="col-sm-2 col-form-label">Descripción</label>
-              <div class="col-sm-10">
-                <textarea class="form-control" formControlName="descripcion" rows="3" required></textarea>
+              <label class="col-sm-2 col-form-label me-3">Descripción</label>
+              <div class="col-12">
+                <textarea class="form-control w-100" formControlName="descripcion" rows="3" required></textarea>
               </div>
             </div>
             <div class="mb-4 row">
@@ -91,9 +91,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
           <button type="button" class="btn btn-warning btn-sm" *ngIf="isUpdate" (click)="update()">Actualizar</button>
-          <button type="button" class="btn btn-success btn-sm" *ngIf="!isUpdate" (click)="save()">Guardar</button>
+          <button type="button" class="button2" *ngIf="!isUpdate" (click)="save()">Guardar</button>
         </div>
       </div>
     </div>
