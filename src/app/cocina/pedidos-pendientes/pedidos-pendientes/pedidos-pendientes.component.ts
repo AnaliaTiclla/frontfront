@@ -26,14 +26,14 @@ export class PedidosPendientesComponent implements OnInit {
 
   ngOnInit() {
     this.list();
-    this.wsOrdenService.ordenes$.subscribe(
-      ordenes => {
-        this.listOrdenes = ordenes.map(orden => ({
-          ...orden,
-          condicion: 'Pendiente',
-          nombreProducto: this.getNombreProducto(orden.productoID)
-        }));
-        this.filteredOrdenes = [...this.listOrdenes];
+  this.wsOrdenService.ordenes$.subscribe(
+    ordenes => {
+      this.listOrdenes = ordenes.map(orden => ({
+        ...orden,
+        nombreProducto: this.getNombreProducto(orden.productoID)
+      }));
+      // Aplicar el filtro actual después de actualizar las órdenes
+      this.filterPendingOrders(); // Por defecto mostrar pendientes
       }
     );
   }
@@ -52,14 +52,21 @@ export class PedidosPendientesComponent implements OnInit {
   }
 
   filterPendingOrders() {
-    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'Pendiente');
+    this.currentFilter = 'pending';
+    this.filteredOrdenes = this.listOrdenes.filter(orden => 
+      orden.condicion === 'Pendiente'
+    );
   }
-
+  
   filterProcessingOrders() {
-    this.filteredOrdenes = this.listOrdenes.filter(orden => orden.condicion === 'Procesando');
+    this.currentFilter = 'processing';
+    this.filteredOrdenes = this.listOrdenes.filter(orden => 
+      orden.condicion === 'Procesando'
+    );
   }
-
+  
   filterAllOrders() {
+    this.currentFilter = 'all';
     this.filteredOrdenes = [...this.listOrdenes];
   }
 
@@ -68,6 +75,8 @@ export class PedidosPendientesComponent implements OnInit {
     this.ordenService.updateDetalleOrden(orden).subscribe({
       next: (respuesta) => {
         console.log('Orden actualizada exitosamente:', respuesta);
+        // Reaplica el filtro actual
+        this.filterCurrentState();
       },
       error: (error) => {
         console.error('Error al actualizar condición:', error);
@@ -77,11 +86,14 @@ export class PedidosPendientesComponent implements OnInit {
   
 
 
+
   marcarCompletado(orden: OrdenDetalleModel) {
     orden.condicion = 'Completado';
     this.ordenService.updateDetalleOrden(orden).subscribe({
       next: (respuesta) => {
         console.log('Orden actualizada exitosamente:', respuesta);
+        // Reaplica el filtro actual
+        this.filterCurrentState();
       },
       error: (error) => {
         console.error('Error al actualizar condición:', error);
@@ -93,4 +105,23 @@ export class PedidosPendientesComponent implements OnInit {
     const producto = this.productos.find(p => p.productoID === productoId);
     return producto?.nombre || 'Producto Desconocido';
   }
+
+
+  // Añade una propiedad para rastrear el filtro actual
+currentFilter: 'all' | 'pending' | 'processing' = 'pending';
+
+// Método para mantener el estado del filtro actual
+filterCurrentState() {
+  switch (this.currentFilter) {
+    case 'pending':
+      this.filterPendingOrders();
+      break;
+    case 'processing':
+      this.filterProcessingOrders();
+      break;
+    case 'all':
+      this.filterAllOrders();
+      break;
+  }
+}
 }

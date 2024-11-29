@@ -79,10 +79,7 @@
           </div>
 
           <div class="orden-acciones">
-            <button class="btn btn-primary me-2" (click)="agregarProductos()" *ngIf="mesaSeleccionada.condicion === 'Ocupada'">
-              Agregar más productos
-            </button>
-            <button class="btn btn-primary me-2" (click)="enviarOrden()" *ngIf="mesaSeleccionada.condicion !== 'Ocupada'">
+            <button class="btn btn-primary me-2" (click)="enviarOrden()">
               Enviar a Cocina
             </button>
             <button class="btn btn-success" (click)="mostrarPago()">
