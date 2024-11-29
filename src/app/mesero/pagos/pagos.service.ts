@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError } from 'rxjs';
 import { PagoModel } from './pago-model';
 import { PagoDetalleModel } from './pagoDetalle-model';
 
@@ -8,14 +8,16 @@ import { PagoDetalleModel } from './pagoDetalle-model';
   providedIn: 'root'
 })
 export class PagosService {
-  private apiUrl = 'https://apiperu.dev/api/dni';
-  private token = 'INGRESAR_TOKEN_AQUI';
   private URL_API: string = 'https://backfinal-v70.onrender.com/mozo';
   private http = inject(HttpClient);
 
   getPago(): Observable<PagoModel[]> {
     return this.http.get<PagoModel[]>(`${this.URL_API}/pago/listar`).pipe(
-      map(res => res)
+      map(res => res),
+      catchError(error => {
+        console.error('Error en getPago:', error);
+        throw error;
+      })
     );
   }
 
