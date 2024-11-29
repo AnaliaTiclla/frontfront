@@ -32,19 +32,17 @@ export class PagosComponent implements OnInit {
   private pagosService = inject(PagosService);
   private productoService = inject(ProductoService);   
 
-  
   orden: OrdenModel | null = null;
   detallesOrden: OrdenDetalleModel[] = [];
   tiposComprobante: TipocomprobanteModel[] = [];
   listProductos: ProductoModel[] = [];
-
   
   pagoForm = new FormGroup({
     metodoPago: new FormControl('', Validators.required),
     tipoComprobante: new FormControl('', Validators.required),
-    tipoDocumento: new FormControl(''),
-    numeroDocumento: new FormControl(''),
-    izipayComprobante: new FormControl('')
+    tipoDocumento: new FormControl({ value: '', disabled: true }),
+    numeroDocumento: new FormControl({ value: '', disabled: true }),
+    izipayComprobante: new FormControl({ value: '', disabled: true })
   });
 
   ngOnInit(): void {
@@ -57,13 +55,64 @@ export class PagosComponent implements OnInit {
     }
     this.cargarTiposComprobante();
     this.loadProductos();
+    this.setupFormSubscriptions();
+  }
+
+  setupFormSubscriptions(): void {
+    // Manejar cambios en método de pago
+    this.pagoForm.get('metodoPago')?.valueChanges.subscribe(metodoPago => {
+      const izipayControl = this.pagoForm.get('izipayComprobante');
+      if (metodoPago === 'tarjeta' || metodoPago === 'billetera digital') {
+        izipayControl?.enable();
+      } else {
+        izipayControl?.disable();
+        izipayControl?.setValue('');
+      }
+    });
+
+    // Manejar cambios en tipo de comprobante
+    this.pagoForm.get('tipoComprobante')?.valueChanges.subscribe(tipoComprobante => {
+      const tipoDocControl = this.pagoForm.get('tipoDocumento');
+      const numDocControl = this.pagoForm.get('numeroDocumento');
+      
+      const comprobante = this.tiposComprobante.find(tc => tc.tipoComprobanteId === Number(tipoComprobante));
+      
+      // Reset y deshabilitar por defecto
+      tipoDocControl?.disable();
+      numDocControl?.disable();
+      tipoDocControl?.setValue('');
+      numDocControl?.setValue('');
+
+      if (comprobante) {
+        switch (comprobante.nombre.toLowerCase()) {
+          case 'sin comprobante':
+          case 'boleta simple':
+            // Mantener ambos campos deshabilitados y vacíos
+            break;
+          case 'boleta':
+            tipoDocControl?.setValue('dni');
+            tipoDocControl?.disable();
+            numDocControl?.enable();
+            break;
+          case 'factura':
+            tipoDocControl?.setValue('ruc');
+            tipoDocControl?.disable();
+            numDocControl?.enable();
+            break;
+          default:
+            // Para otros tipos de comprobante, habilitar ambos campos
+            tipoDocControl?.enable();
+            numDocControl?.enable();
+        }
+      }
+    });
   }
 
   cargarDetallesOrden(ordenId: number): void {
     this.detalleOrdenService.getDetalleOrden(ordenId).subscribe({
       next: (resp: any) => {
         if (resp && resp.data) {
-        this.detallesOrden = resp.data;
+          this.detallesOrden = resp.data;
         }
       },
       error: (error) => {
@@ -76,7 +125,7 @@ export class PagosComponent implements OnInit {
     this.tipoComprobanteService.getTipocomprobante().subscribe({
       next: (resp: any) => {
         if (resp && resp.data) {
-        this.tiposComprobante = resp.data;
+          this.tiposComprobante = resp.data;
         }
       },
       error: (error) => {
@@ -105,7 +154,7 @@ export class PagosComponent implements OnInit {
       subTotal: this.orden.montoTotal * 0.82,
       IGV: this.orden.montoTotal * 0.18,
       total: this.orden.montoTotal,
-      pagoID: 1 // Se asignará en el backend
+      pagoID: 1
     };
 
     this.pagosService.savePago(datosPago).subscribe({
@@ -146,5 +195,4 @@ export class PagosComponent implements OnInit {
       }
     });
   }
-
 }

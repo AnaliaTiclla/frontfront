@@ -19,6 +19,7 @@ export class UsuarioComponent implements OnInit {
   private empleadoService = inject(EmpleadoService);
 
   listaEmpleados: EmpleadoModelModel[] = [];
+  
 
 
   listUsuarios: UsuarioModelModel[] = [];
@@ -127,11 +128,15 @@ export class UsuarioComponent implements OnInit {
     this.formUsuario.patchValue({
       usuarioID: item.usuarioID,
       username: item.username,
-      password: item.password,
+      password: "",
       estado: item.estado,
       empleadoID: item.empleadoID,
       rol: item.rol,
 
     });
+  }
+
+  getEmpleadoName(empleadoID: number): string {
+    return this.listaEmpleados.find(emp => emp.empleadoID === empleadoID)?.nombre || '';
   }
 }
