@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit {
       },
 
       
-      { name: 'Consultas', link: '/admin/consultas' },
+      // { name: 'Consultas', link: '/admin/consultas' },
       
     ];
   }
@@ -54,16 +54,13 @@ export class NavbarComponent implements OnInit {
   getMeseroOptions() {
     return [
       { name: 'Distribución de Mesas', link: '/mesero/mesas' },
-      { name: 'Órdenes Activas', link: '/mesero/ordenes-activas' },
-      { name: 'Pedidos en Cola', link: '/mesero/pedidos-en-cola' },
-      { name: 'Historial de Pedidos', link: '/mesero/historial-pedidos' }
     ];
   }
 
   getCocinaOptions() {
     return [
       { name: 'Pedidos Pendientes', link: '/cocina/pedidos-pendientes' },
-      { name: 'Historial de Pedidos', link: '/cocina/historial-pedidos' }
+
     ];
   }
 }

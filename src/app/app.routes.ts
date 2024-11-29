@@ -28,8 +28,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'mesas', pathMatch: 'full' }, // Esta línea es la nueva
       { path: 'mesas', loadComponent: () => import('./mesero/mesas/distribucion-mesas/distribucion-mesas.component').then(m => m.DistribucionMesasComponent) },
       { path: 'pagos', loadComponent: () => import('./mesero/pagos/pagos.component').then(m => m.PagosComponent) },
-      // { path: 'pedidos-en-cola', loadComponent: () => import('./mesero/pedidos-en-cola/pedidos-en-cola.component').then(m => m.PedidosEnColaComponent) },
-      // { path: 'historial-pedidos', loadComponent: () => import('./mesero/historial-pedidos/historial-pedidos.component').then(m => m.HistorialPedidosComponent) },
+      
     ]
   },
 
@@ -39,11 +38,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'pedidos-pendientes', pathMatch: 'full' }, // Esta línea es la nueva
 
-
-      // { path: 'mesas', loadComponent: () => import('./cocina/pedidos-pendientes/pedidos-pendientes/pedidos-pendientes.component').then(m => m.PedidosPendientesComponent) },
-      //{ path: 'ordenes-activas', loadComponent: () => import('./mesero/ordenes-activas/ordenes-activas.component').then(m => m.OrdenesActivasComponent) },
       { path: 'pedidos-pendientes', loadComponent: () => import('./cocina/pedidos-pendientes/pedidos-pendientes/pedidos-pendientes.component').then(m => m.PedidosPendientesComponent) },
-      // { path: 'historial-pedidos', loadComponent: () => import('./mesero/historial-pedidos/historial-pedidos.component').then(m => m.HistorialPedidosComponent) },
     ]
   },
 
