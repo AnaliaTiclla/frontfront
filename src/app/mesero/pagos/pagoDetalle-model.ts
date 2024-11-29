@@ -1,10 +1,10 @@
 export interface PagoDetalleModel {
     detallePagoId?: number;
     tipoDoc: string;
-    numeroDoc: string;
-    iziPay: string;
+    numeroDoc?: string;
+    iziPay?: string;
     subTotal: number;
-    IGV: number;
+    igv: number;
     total: number;
     pagoID: number;
 } 

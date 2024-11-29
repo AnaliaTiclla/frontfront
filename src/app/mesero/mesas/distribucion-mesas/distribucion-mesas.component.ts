@@ -116,7 +116,7 @@ export class DistribucionMesasComponent implements OnInit {
         subTotal: this.getPrecioProducto(producto.productoID),
         ordenID: 0,
         comentario: '',
-        condicion: 'PENDIENTE'
+        condicion: 'Pendiente'
       };
       this.ordenActual.push(nuevoDetalle);
     }
@@ -155,19 +155,6 @@ export class DistribucionMesasComponent implements OnInit {
       detalleItem.comentario = comentario;
       
     }
-  }
-
-  saveDetalleOrden(ordenDetalle: OrdenDetalleModel) {
-    this.ordenService.saveDetalleOrden(ordenDetalle).subscribe({
-      next: (resp: any) => {
-        if (resp && resp.status === 'success') {
-          
-        }
-      },
-      error: (error) => {
-        console.error('Error al guardar producto:', error);
-      }
-    });
   }
 
   saveOrden(orden: OrdenModel) {
@@ -239,7 +226,6 @@ enviarOrden(): void {
     alert('Debe seleccionar una mesa y agregar productos a la orden antes de enviarla.');
   }
 }
-  
 
 mostrarPago(): void {
   if (confirm('¿Desea generar el comprobante de pago?')) {
@@ -254,7 +240,6 @@ mostrarPago(): void {
     }
   }
 }
-
 
   loadSubcategorias(): void {
     this.subcategoriaService.getSubcategoria().subscribe({
@@ -303,8 +288,6 @@ mostrarPago(): void {
     });
   }
 
-
-
   cargarSubcategorias() {
     this.subcategoriaService.getSubcategoria().subscribe({
       next: (resp: any) => {
@@ -322,6 +305,4 @@ mostrarPago(): void {
     const subcategory = this.listSubcategoria.find(sub => sub.subCategoriaId === subcategoriaID);
     return subcategory?.nombre || 'Sin subcategoría';
   }
-
-  
 }
