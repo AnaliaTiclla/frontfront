@@ -45,7 +45,6 @@ export class PagosService {
 
   setData(data: any): void {
     this.data = data;
-    console.log('Ahya:', data);
   }
 
   getData(): any {

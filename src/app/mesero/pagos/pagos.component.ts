@@ -142,26 +142,27 @@ export class PagosComponent implements OnInit {
     const datosPago: PagoModel = {
       fecha: new Date(),
       metodoPago: this.pagoForm.get('metodoPago')?.value || '',
-      estadoPago: 'COMPLETADO',
+      estadoPago: 'Completado',
       ordenID: this.orden.ordenID!,
       tipocomprobanteID: Number(this.pagoForm.get('tipoComprobante')?.value)
     };
+    console.log('Pago: ', datosPago)
 
     const detallesPago: PagoDetalleModel = {
       tipoDoc: this.pagoForm.get('tipoDocumento')?.value || '',
       numeroDoc: this.pagoForm.get('numeroDocumento')?.value || '',
       iziPay: this.pagoForm.get('izipayComprobante')?.value || '',
-      subTotal: this.orden.montoTotal * 0.82,
-      IGV: this.orden.montoTotal * 0.18,
-      total: this.orden.montoTotal,
-      pagoID: 1
-    };
+      subTotal: parseFloat((this.orden.montoTotal * 0.82).toFixed(2)),
+      igv: parseFloat((this.orden.montoTotal * 0.18).toFixed(2)),
+      total: parseFloat(this.orden.montoTotal.toFixed(2)),
+      pagoID: 0
+    };    
 
     this.pagosService.savePago(datosPago).subscribe({
       next: (respPago) => {
         if (respPago.status === 'success') {
-          detallesPago.pagoID = respPago.data.pagoID;
-          
+          detallesPago.pagoID = respPago.data.pagoId;
+          console.log('Detalle Pago: ', detallesPago)
           this.pagosService.saveDetallePago(detallesPago).subscribe({
             next: () => {
               this.router.navigate(['/mesero/mesas']);
