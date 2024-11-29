@@ -1,100 +1,167 @@
-<div class="container mt-4">
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
-      </div>
-    <div class="row">
-      <div class="col-12">
-        <h2 class="mb-4 text-center">Generación de Reportes</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <button 
-          class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
-          (click)="generateProductReport()">
-          <i class="bi bi-file-earmark-pdf me-2"></i>
-          Reporte de Productos
-        </button>
-      </div>
-      <div class="col-md-6 mb-3">
-        <button 
-          class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
-          (click)="generateEmployeeReport()">
-          <i class="bi bi-file-earmark-pdf me-2"></i>
-          Reporte de Empleados
-        </button>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-12">
+    <h2 class="mt-4 text-center">EMISION DE REPORTES</h2>
+  </div>
+</div>
 
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateArticulosReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Productos Vendidos Hoy
-      </button>
-    </div>
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateOrdenReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Ordenes del día
-      </button>
-    </div>
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateMozoReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de ventas por mozos
-      </button>
-    </div>
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateBoletaReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Ventas con Boleta
-      </button>
-    </div>
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateBoletaSimpleReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Ventas con Boleta Simple
-      </button>
-    </div>
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateFacturaReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Ventas con Factura
-      </button>
-    </div>
-
-    <div class="col-md-6 mb-3">
-      <button 
-        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
-        (click)="generateSinComprobanteReport()">
-        <i class="bi bi-file-earmark-pdf me-2"></i>
-        Reporte de Ventas sin Comprobante
-      </button>
-    </div>
-  
-    <div class="row mt-4">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Instrucciones</h5>
-            <p class="card-text">
-              Haga clic en los botones para generar reportes en formato PDF. 
-              Los reportes se abrirán en una nueva pestaña del navegador.
-            </p>
-          </div>
-        </div>
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Instrucciones</h5>
+        <p class="card-text">
+          Haga clic en los botones para generar reportes en formato PDF. 
+          Los reportes se abrirán en una nueva pestaña del navegador.
+        </p>
       </div>
     </div>
   </div>
+</div>
+
+
+
+<div class="container mt-4">
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- Botón 1 -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateProductReport()">
+        <span class="button__text">REPORTE DE PRODUCTOS</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateEmployeeReport()">
+        <span class="button__text">REPORTE DE EMPLEADOS</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateArticulosReport()">
+        <span class="button__text">REPORTE DE PRODUCTOS VENDIDOS HOY</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateOrdenReport()">
+        <span class="button__text">REPORTE DE ORDENES DEL DIA</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateMozoReport()">
+        <span class="button__text">REPORTE DE VENTAS POR MOZOS</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateBoletaReport()">
+        <span class="button__text">REPORTE DE VENTAS CON BOLETA</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateBoletaSimpleReport()">
+        <span class="button__text">REPORTE DE VENTAS CON BOLETA SIMPLE</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateFacturaReport()">
+        <span class="button__text">REPORTE DE VENTAS CON FACTURA</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4 mb-4">
+    <div class="col-12">
+      <button type="button" class="button" (click)="generateSinComprobanteReport()">
+        <span class="button__text">REPORTE DE VENTAS SIN COMPROBANTE</span>
+        <span class="button__icon">
+          <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
+            <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+            <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+            <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+
+
+
