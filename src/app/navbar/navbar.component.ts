@@ -29,7 +29,6 @@ export class NavbarComponent implements OnInit {
     return [
       {
         name: 'Panel de Control', dropdown: true, options: [
-          { name: 'Dashboard', link: '/admin/dashboard' },
           { name: 'Reportes', link: '/admin/reportes' }
         ]
       },

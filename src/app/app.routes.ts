@@ -7,8 +7,7 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () => import('./navbar/navbar.component').then(m => m.NavbarComponent),
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', loadComponent: () => import('./admin/reportes/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+      { path: '', redirectTo: 'reportes', pathMatch: 'full' },
       { path: 'reportes', loadComponent: () => import('./admin/reportes/reports/reports.component').then(m => m.ReportsComponent) },
       { path: 'categoria', loadComponent: () => import('./admin/mantenedores/categoria/categoria/categoria.component').then(m => m.CategoriaComponent) },
       { path: 'subcategorias', loadComponent: () => import('./admin/mantenedores/subcategorias/subcategoria/subcategoria.component').then(m => m.SubcategoriaComponent) },
