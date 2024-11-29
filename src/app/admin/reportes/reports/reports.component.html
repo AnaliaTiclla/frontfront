@@ -25,6 +25,64 @@
         </button>
       </div>
     </div>
+
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateArticulosReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Productos Vendidos Hoy
+      </button>
+    </div>
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateOrdenReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Ordenes del día
+      </button>
+    </div>
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateMozoReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de ventas por mozos
+      </button>
+    </div>
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateBoletaReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Ventas con Boleta
+      </button>
+    </div>
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateBoletaSimpleReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Ventas con Boleta Simple
+      </button>
+    </div>
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateFacturaReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Ventas con Factura
+      </button>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <button 
+        class="btn btn-success btn-lg w-100 d-flex align-items-center justify-content-center" 
+        (click)="generateSinComprobanteReport()">
+        <i class="bi bi-file-earmark-pdf me-2"></i>
+        Reporte de Ventas sin Comprobante
+      </button>
+    </div>
   
     <div class="row mt-4">
       <div class="col-12">
