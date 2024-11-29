@@ -21,10 +21,10 @@
         <h2>Mesa {{ mesaSeleccionada.numero }}</h2>
         <button class="btn-cerrar" (click)="cerrarModal()">×</button>
       </div>
-  
+
       <!-- Combobox para seleccionar subcategoría -->
       <div class="form-group">
-        <label for="subcategoria-select">Seleccionar Subcategoría:</label>
+        <label class="mb-2" for="subcategoria-select">Subcategoría:</label>
         <select
           id="subcategoria-select"
           class="form-control"
@@ -34,10 +34,10 @@
           </option>
         </select>
       </div>
-  
+
       <!-- Productos filtrados por subcategoría -->
       <div class="productos-grid">
-        <div 
+        <div
           *ngFor="let producto of getProductosPorSubcategoria()"
           class="producto-item"
           (click)="agregarAOrden(producto)">
@@ -55,11 +55,11 @@
           <div class="orden-item" *ngFor="let item of ordenActual">
             <div class="item-info">
               <span>{{ getNombreProducto(item.productoID) }}</span>
-              <span class="cantidad">x{{ item.cantidad }}</span>
+              <span class="me-3 cantidad">x{{ item.cantidad }}</span>
             </div>
             <div class="item-acciones">
-              <span>S/. {{ (getPrecioProducto(item.productoID) * item.cantidad).toFixed(2) }}</span>
-              <button class="btn btn-danger btn-sm" (click)="eliminarItem(item)">×</button>
+              <span class="me-2">S/. {{ (getPrecioProducto(item.productoID) * item.cantidad).toFixed(2) }}</span>
+              <button class="me-2 btn btn-danger btn-sm" (click)="eliminarItem(item)">×</button>
             </div>
             <div class="comentario">
               <label for="comentario-{{item.productoID}}">Comentario:</label>
@@ -94,3 +94,4 @@
     </div>
   </div>
 </div>
+

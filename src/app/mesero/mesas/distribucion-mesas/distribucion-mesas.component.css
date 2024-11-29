@@ -50,7 +50,7 @@
 
   .modal-content {
     background: white;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 8px;
     width: 90%;
     max-width: 800px;
@@ -125,14 +125,16 @@
     gap: 0.5rem;
   }
 
-  .item-acciones {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
+
 
   .cantidad {
-    color: #666;
+    color: #000000;
+    font-weight: bold;
+  }
+
+  .item-acciones {
+    margin-right: auto;
+    gap: 1rem;
   }
 
   .orden-total {
@@ -215,5 +217,7 @@
   .producto-item:hover {
     background-color: #f0f0f0;
   }
+
+  
 
   
