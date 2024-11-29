@@ -8,7 +8,7 @@ import { TipocomprobanteModel } from './tipocomprobante-model';
   providedIn: 'root'
 })
 export class TipocomprobanteService {
-  private URL_API: string = 'http://localhost:8080/admin/tipocomprobante';
+  private URL_API: string = 'https://backfinal-v70.onrender.com/admin/tipocomprobante';
   private http = inject(HttpClient);
 
   getTipocomprobante(): Observable<TipocomprobanteModel[]> {

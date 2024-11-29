@@ -10,7 +10,7 @@ import { PagoDetalleModel } from './pagoDetalle-model';
 export class PagosService {
   private apiUrl = 'https://apiperu.dev/api/dni';
   private token = 'INGRESAR_TOKEN_AQUI';
-  private URL_API: string = 'http://localhost:8080/mozo';
+  private URL_API: string = 'https://backfinal-v70.onrender.com/mozo';
   private http = inject(HttpClient);
 
   getPago(): Observable<PagoModel[]> {

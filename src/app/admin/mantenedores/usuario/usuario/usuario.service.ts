@@ -10,7 +10,7 @@ import { UsuarioModelModel } from './usuario-model';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private URL_API: string = 'http://localhost:8080/admin/usuario';
+  private URL_API: string = 'https://backfinal-v70.onrender.com/admin/usuario';
   private http = inject(HttpClient);
 
   getUsuario(): Observable<UsuarioModelModel[]> {
